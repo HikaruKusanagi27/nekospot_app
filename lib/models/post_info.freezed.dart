@@ -17,8 +17,8 @@ final _privateConstructorUsedError = UnsupportedError(
 /// @nodoc
 mixin _$PostInfo {
   String get imagePath => throw _privateConstructorUsedError; // サムネイル画像のパス
-  String get title => throw _privateConstructorUsedError; // 動画タイトル
-  String get place => throw _privateConstructorUsedError;
+  String get title => throw _privateConstructorUsedError; // タイトル
+  String get prefectureName => throw _privateConstructorUsedError;
 
   /// Create a copy of PostInfo
   /// with the given fields replaced by the non-null parameter values.
@@ -32,7 +32,7 @@ abstract class $PostInfoCopyWith<$Res> {
   factory $PostInfoCopyWith(PostInfo value, $Res Function(PostInfo) then) =
       _$PostInfoCopyWithImpl<$Res, PostInfo>;
   @useResult
-  $Res call({String imagePath, String title, String place});
+  $Res call({String imagePath, String title, String prefectureName});
 }
 
 /// @nodoc
@@ -52,7 +52,7 @@ class _$PostInfoCopyWithImpl<$Res, $Val extends PostInfo>
   $Res call({
     Object? imagePath = null,
     Object? title = null,
-    Object? place = null,
+    Object? prefectureName = null,
   }) {
     return _then(_value.copyWith(
       imagePath: null == imagePath
@@ -63,9 +63,9 @@ class _$PostInfoCopyWithImpl<$Res, $Val extends PostInfo>
           ? _value.title
           : title // ignore: cast_nullable_to_non_nullable
               as String,
-      place: null == place
-          ? _value.place
-          : place // ignore: cast_nullable_to_non_nullable
+      prefectureName: null == prefectureName
+          ? _value.prefectureName
+          : prefectureName // ignore: cast_nullable_to_non_nullable
               as String,
     ) as $Val);
   }
@@ -79,7 +79,7 @@ abstract class _$$PostInfoImplCopyWith<$Res>
       __$$PostInfoImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({String imagePath, String title, String place});
+  $Res call({String imagePath, String title, String prefectureName});
 }
 
 /// @nodoc
@@ -97,7 +97,7 @@ class __$$PostInfoImplCopyWithImpl<$Res>
   $Res call({
     Object? imagePath = null,
     Object? title = null,
-    Object? place = null,
+    Object? prefectureName = null,
   }) {
     return _then(_$PostInfoImpl(
       imagePath: null == imagePath
@@ -108,9 +108,9 @@ class __$$PostInfoImplCopyWithImpl<$Res>
           ? _value.title
           : title // ignore: cast_nullable_to_non_nullable
               as String,
-      place: null == place
-          ? _value.place
-          : place // ignore: cast_nullable_to_non_nullable
+      prefectureName: null == prefectureName
+          ? _value.prefectureName
+          : prefectureName // ignore: cast_nullable_to_non_nullable
               as String,
     ));
   }
@@ -120,20 +120,22 @@ class __$$PostInfoImplCopyWithImpl<$Res>
 
 class _$PostInfoImpl implements _PostInfo {
   const _$PostInfoImpl(
-      {required this.imagePath, required this.title, required this.place});
+      {required this.imagePath,
+      required this.title,
+      required this.prefectureName});
 
   @override
   final String imagePath;
 // サムネイル画像のパス
   @override
   final String title;
-// 動画タイトル
+// タイトル
   @override
-  final String place;
+  final String prefectureName;
 
   @override
   String toString() {
-    return 'PostInfo(imagePath: $imagePath, title: $title, place: $place)';
+    return 'PostInfo(imagePath: $imagePath, title: $title, prefectureName: $prefectureName)';
   }
 
   @override
@@ -144,11 +146,13 @@ class _$PostInfoImpl implements _PostInfo {
             (identical(other.imagePath, imagePath) ||
                 other.imagePath == imagePath) &&
             (identical(other.title, title) || other.title == title) &&
-            (identical(other.place, place) || other.place == place));
+            (identical(other.prefectureName, prefectureName) ||
+                other.prefectureName == prefectureName));
   }
 
   @override
-  int get hashCode => Object.hash(runtimeType, imagePath, title, place);
+  int get hashCode =>
+      Object.hash(runtimeType, imagePath, title, prefectureName);
 
   /// Create a copy of PostInfo
   /// with the given fields replaced by the non-null parameter values.
@@ -163,14 +167,14 @@ abstract class _PostInfo implements PostInfo {
   const factory _PostInfo(
       {required final String imagePath,
       required final String title,
-      required final String place}) = _$PostInfoImpl;
+      required final String prefectureName}) = _$PostInfoImpl;
 
   @override
   String get imagePath; // サムネイル画像のパス
   @override
-  String get title; // 動画タイトル
+  String get title; // タイトル
   @override
-  String get place;
+  String get prefectureName;
 
   /// Create a copy of PostInfo
   /// with the given fields replaced by the non-null parameter values.

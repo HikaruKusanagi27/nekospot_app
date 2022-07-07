@@ -20,6 +20,7 @@ mixin _$PostState {
   Uint8List? get imageBitmap => throw _privateConstructorUsedError;
   String get errorMessage => throw _privateConstructorUsedError;
   String? get selectedPrefecture => throw _privateConstructorUsedError;
+  String? get imageError => throw _privateConstructorUsedError;
 
   /// Create a copy of PostState
   /// with the given fields replaced by the non-null parameter values.
@@ -37,7 +38,8 @@ abstract class $PostStateCopyWith<$Res> {
       {bool isLoading,
       Uint8List? imageBitmap,
       String errorMessage,
-      String? selectedPrefecture});
+      String? selectedPrefecture,
+      String? imageError});
 }
 
 /// @nodoc
@@ -59,6 +61,7 @@ class _$PostStateCopyWithImpl<$Res, $Val extends PostState>
     Object? imageBitmap = freezed,
     Object? errorMessage = null,
     Object? selectedPrefecture = freezed,
+    Object? imageError = freezed,
   }) {
     return _then(_value.copyWith(
       isLoading: null == isLoading
@@ -77,6 +80,10 @@ class _$PostStateCopyWithImpl<$Res, $Val extends PostState>
           ? _value.selectedPrefecture
           : selectedPrefecture // ignore: cast_nullable_to_non_nullable
               as String?,
+      imageError: freezed == imageError
+          ? _value.imageError
+          : imageError // ignore: cast_nullable_to_non_nullable
+              as String?,
     ) as $Val);
   }
 }
@@ -93,7 +100,8 @@ abstract class _$$PostStateImplCopyWith<$Res>
       {bool isLoading,
       Uint8List? imageBitmap,
       String errorMessage,
-      String? selectedPrefecture});
+      String? selectedPrefecture,
+      String? imageError});
 }
 
 /// @nodoc
@@ -113,6 +121,7 @@ class __$$PostStateImplCopyWithImpl<$Res>
     Object? imageBitmap = freezed,
     Object? errorMessage = null,
     Object? selectedPrefecture = freezed,
+    Object? imageError = freezed,
   }) {
     return _then(_$PostStateImpl(
       isLoading: null == isLoading
@@ -131,6 +140,10 @@ class __$$PostStateImplCopyWithImpl<$Res>
           ? _value.selectedPrefecture
           : selectedPrefecture // ignore: cast_nullable_to_non_nullable
               as String?,
+      imageError: freezed == imageError
+          ? _value.imageError
+          : imageError // ignore: cast_nullable_to_non_nullable
+              as String?,
     ));
   }
 }
@@ -142,7 +155,8 @@ class _$PostStateImpl with DiagnosticableTreeMixin implements _PostState {
       {this.isLoading = false,
       this.imageBitmap,
       this.errorMessage = '',
-      this.selectedPrefecture});
+      this.selectedPrefecture,
+      this.imageError});
 
   @override
   @JsonKey()
@@ -154,10 +168,12 @@ class _$PostStateImpl with DiagnosticableTreeMixin implements _PostState {
   final String errorMessage;
   @override
   final String? selectedPrefecture;
+  @override
+  final String? imageError;
 
   @override
   String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
-    return 'PostState(isLoading: $isLoading, imageBitmap: $imageBitmap, errorMessage: $errorMessage, selectedPrefecture: $selectedPrefecture)';
+    return 'PostState(isLoading: $isLoading, imageBitmap: $imageBitmap, errorMessage: $errorMessage, selectedPrefecture: $selectedPrefecture, imageError: $imageError)';
   }
 
   @override
@@ -168,7 +184,8 @@ class _$PostStateImpl with DiagnosticableTreeMixin implements _PostState {
       ..add(DiagnosticsProperty('isLoading', isLoading))
       ..add(DiagnosticsProperty('imageBitmap', imageBitmap))
       ..add(DiagnosticsProperty('errorMessage', errorMessage))
-      ..add(DiagnosticsProperty('selectedPrefecture', selectedPrefecture));
+      ..add(DiagnosticsProperty('selectedPrefecture', selectedPrefecture))
+      ..add(DiagnosticsProperty('imageError', imageError));
   }
 
   @override
@@ -183,7 +200,9 @@ class _$PostStateImpl with DiagnosticableTreeMixin implements _PostState {
             (identical(other.errorMessage, errorMessage) ||
                 other.errorMessage == errorMessage) &&
             (identical(other.selectedPrefecture, selectedPrefecture) ||
-                other.selectedPrefecture == selectedPrefecture));
+                other.selectedPrefecture == selectedPrefecture) &&
+            (identical(other.imageError, imageError) ||
+                other.imageError == imageError));
   }
 
   @override
@@ -192,7 +211,8 @@ class _$PostStateImpl with DiagnosticableTreeMixin implements _PostState {
       isLoading,
       const DeepCollectionEquality().hash(imageBitmap),
       errorMessage,
-      selectedPrefecture);
+      selectedPrefecture,
+      imageError);
 
   /// Create a copy of PostState
   /// with the given fields replaced by the non-null parameter values.
@@ -208,7 +228,8 @@ abstract class _PostState implements PostState {
       {final bool isLoading,
       final Uint8List? imageBitmap,
       final String errorMessage,
-      final String? selectedPrefecture}) = _$PostStateImpl;
+      final String? selectedPrefecture,
+      final String? imageError}) = _$PostStateImpl;
 
   @override
   bool get isLoading;
@@ -218,6 +239,8 @@ abstract class _PostState implements PostState {
   String get errorMessage;
   @override
   String? get selectedPrefecture;
+  @override
+  String? get imageError;
 
   /// Create a copy of PostState
   /// with the given fields replaced by the non-null parameter values.

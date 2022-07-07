@@ -3,6 +3,9 @@ import 'package:image_picker/image_picker.dart';
 import 'package:image/image.dart' as image_lib;
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_storage/firebase_storage.dart';
+import 'dart:io';
 
 part 'post_state.freezed.dart';
 
@@ -13,6 +16,7 @@ class PostState with _$PostState {
     Uint8List? imageBitmap,
     @Default('') String errorMessage,
     String? selectedPrefecture,
+    String? imageError,
   }) = _PostState;
 }
 
@@ -46,5 +50,39 @@ class PostViewModel extends StateNotifier<PostState> {
 
   void setPrefecture(String? prefecture) {
     state = state.copyWith(selectedPrefecture: prefecture);
+  }
+
+  void setImageError(String? error) {
+    state = state.copyWith(imageError: error);
+  }
+
+  Future<void> saveToFirebase({
+    required String title,
+    required String? prefectureName,
+    required XFile? image,
+  }) async {
+    try {
+      String? imageUrl;
+      if (image != null) {
+        final fileName = DateTime.now().millisecondsSinceEpoch.toString();
+        final storageRef = FirebaseStorage.instance
+            .ref()
+            .child('post_images')
+            .child('$fileName.jpg');
+        await storageRef.putFile(File(image.path));
+        imageUrl = await storageRef.getDownloadURL();
+      }
+
+      await FirebaseFirestore.instance.collection('posts').add({
+        'title': title,
+        'prefectureName': prefectureName,
+        'imageUrl': imageUrl,
+        'createdAt': FieldValue.serverTimestamp(),
+      });
+    } catch (e) {
+      if (kDebugMode) {
+        print('Error saving to Firebase: $e');
+      }
+    }
   }
 }

@@ -13,7 +13,7 @@ final postStreamProvider = StreamProvider<List<PostInfo>>((ref) {
       return PostInfo(
         imagePath: data['imageUrl'] ?? '',
         title: data['title'] ?? '未設定',
-        place: data['place'] ?? '',
+        prefectureName: data['prefectureName'] ?? '未設定',
       );
     }).toList();
   });

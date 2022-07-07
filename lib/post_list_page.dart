@@ -15,7 +15,7 @@ class PostListPage extends StatelessWidget {
   Widget build(BuildContext context) {
     final colorScheme = Theme.of(context).colorScheme;
     return Scaffold(
-      //backgroundColor: Colors.white,
+      backgroundColor: Colors.white,
       appBar: AppBar(
         backgroundColor: colorScheme.primary,
         leading: IconButton(
@@ -146,7 +146,7 @@ class _PostList extends StatelessWidget {
           children: [
             data.imagePath.isNotEmpty
                 ? Image.network(data.imagePath)
-                : const Placeholder(), // 画像がない場合のプレースホルダー
+                : Image.asset('images/noimage-760x460.png'), // 画像がない場合のプレースホルダー
 
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -159,11 +159,11 @@ class _PostList extends StatelessWidget {
                       width: 35,
                       child: ClipRRect(
                         borderRadius: BorderRadius.circular(30),
-                        child: Image.asset('images/neko.jpg'),
+                        child: Image.asset('images/free-neko.jpeg'),
                       ),
                     ),
                     Text(
-                      'ななしの猫さん',
+                      'ななしのネコさん',
                       style: const TextStyle(
                         color: textColor,
                         fontSize: 14,
@@ -184,7 +184,7 @@ class _PostList extends StatelessWidget {
                         ),
                         const SizedBox(width: 54),
                         Text(
-                          '場所: ${data.place}',
+                          '場所: ${data.prefectureName}',
                           style: TextStyle(
                             color: textColor,
                             fontSize: 14,

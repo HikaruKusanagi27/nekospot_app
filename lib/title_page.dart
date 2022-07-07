@@ -12,7 +12,7 @@ class TitlePage extends StatelessWidget {
     return Scaffold(
       body: Center(
         child: Column(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Text(
               '猫スナップ',
@@ -52,18 +52,6 @@ class TitlePage extends StatelessWidget {
                   fontSize: 24,
                   fontWeight: FontWeight.bold,
                   letterSpacing: 1.5,
-                ),
-              ),
-            ),
-            Container(
-              padding: EdgeInsets.all(8),
-              child: ClipRRect(
-                borderRadius: BorderRadius.circular(110),
-                child: Image.asset(
-                  'images/cat-5098930_640.jpg',
-                  height: 400,
-                  width: 400,
-                  fit: BoxFit.cover,
                 ),
               ),
             ),
