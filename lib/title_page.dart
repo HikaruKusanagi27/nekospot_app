@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:nekospot_app/post_page.dart';
+import 'package:test/post_page.dart';
 
 class TitlePage extends StatelessWidget {
   const TitlePage({super.key});
