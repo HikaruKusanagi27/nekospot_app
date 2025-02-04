@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:nekospot_app/home_page.dart';
 import 'package:nekospot_app/post_page.dart';
 
 class TitlePage extends StatelessWidget {
