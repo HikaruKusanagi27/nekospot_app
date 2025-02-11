@@ -13,8 +13,8 @@ class TitlePage extends StatelessWidget {
             begin: Alignment.topCenter,
             end: Alignment.bottomCenter,
             colors: [
-              Colors.pink[50]!,
-              Colors.pink[100]!,
+              Colors.pink.shade50,
+              Colors.pink.shade100,
             ],
           ),
         ),
@@ -39,19 +39,24 @@ class TitlePage extends StatelessWidget {
                       borderRadius: BorderRadius.circular(30),
                       boxShadow: [
                         BoxShadow(
-                          color: Colors.pink[200]!.withOpacity(0.5),
+                          color: Colors.pink.shade200,
                           spreadRadius: 2,
                           blurRadius: 10,
                         ),
                       ],
                     ),
                     child: ElevatedButton.icon(
-                      icon: Icon(Icons.pets, color: Colors.pink[400]),
+                      icon: Icon(
+                        Icons.pets,
+                        color: Colors.pink.shade400,
+                      ),
                       label: Text('はじめる'),
                       onPressed: () {
                         Navigator.push(
                           context,
-                          MaterialPageRoute(builder: (context) => PostPage()),
+                          MaterialPageRoute(
+                            builder: (context) => PostPage(),
+                          ),
                         );
                       },
                       style: ElevatedButton.styleFrom(
@@ -87,14 +92,17 @@ class TitlePage extends StatelessWidget {
                         borderRadius: BorderRadius.circular(120),
                         boxShadow: [
                           BoxShadow(
-                            color: Colors.pink[200]!.withOpacity(0.3),
+                            color: Colors.pink.shade200,
                             spreadRadius: 5,
                             blurRadius: 15,
                             offset: Offset(0, 5),
                           ),
                         ],
                         gradient: LinearGradient(
-                          colors: [Colors.pink[100]!, Colors.purple[100]!],
+                          colors: [
+                            Colors.pink.shade100,
+                            Colors.purple.shade100
+                          ],
                           begin: Alignment.topLeft,
                           end: Alignment.bottomRight,
                         ),

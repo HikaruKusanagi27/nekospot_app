@@ -139,11 +139,18 @@ class _PostList extends StatelessWidget {
                   ),
                   const SizedBox(width: 10),
                   Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
                         data.title,
                         style: const TextStyle(
+                          color: Colors.white,
+                          fontSize: 14,
+                        ),
+                      ),
+                      const SizedBox(width: 54),
+                      Text(
+                        data.subTitle,
+                        style: TextStyle(
                           color: Colors.white,
                           fontSize: 14,
                         ),
@@ -158,18 +165,6 @@ class _PostList extends StatelessWidget {
                   Icon(Icons.more_vert, color: Colors.white),
                   SizedBox(height: 14),
                 ],
-              ),
-            ],
-          ),
-          Row(
-            children: [
-              const SizedBox(width: 54),
-              Text(
-                data.subTitle,
-                style: TextStyle(
-                  color: Colors.white,
-                  fontSize: 14,
-                ),
               ),
             ],
           ),
