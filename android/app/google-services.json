@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "530330000624",
+    "project_id": "neko-snap-app",
+    "storage_bucket": "neko-snap-app.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:530330000624:android:43b064be46affc29cf7635",
+        "android_client_info": {
+          "package_name": "com.example.nekospot_app"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAvUNXfFgdNl7F5FKVycNUWm8bJDHQ-f3U"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

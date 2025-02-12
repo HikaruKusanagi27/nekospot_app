@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:test/post_page.dart';
+import 'package:test/post_list_page.dart';
 
 class TitlePage extends StatelessWidget {
   const TitlePage({super.key});
@@ -55,7 +55,7 @@ class TitlePage extends StatelessWidget {
                         Navigator.push(
                           context,
                           MaterialPageRoute(
-                            builder: (context) => PostPage(),
+                            builder: (context) => PostListPage(),
                           ),
                         );
                       },

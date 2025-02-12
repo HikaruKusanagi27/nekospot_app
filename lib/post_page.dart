@@ -1,176 +1,126 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
-class PostPage extends StatelessWidget {
+class PostPage extends StatefulWidget {
   const PostPage({super.key});
+
+  @override
+  State<PostPage> createState() => _PostPageState();
+}
+
+class _PostPageState extends State<PostPage> {
+  final _formKey = GlobalKey<FormState>();
+  String _name = '未設定';
+  String _prefectures = '未設定';
+  String _place = '未設定';
+
+  final TextEditingController _nameController = TextEditingController();
+  final TextEditingController _prefecturesController = TextEditingController();
+  final TextEditingController _placeController = TextEditingController();
+  static const textColor = Colors.black;
+
+  @override
+  void initState() {
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.pink.shade100,
       appBar: AppBar(
-        leading: TextButton(
-          onPressed: () {
-            Navigator.pop(context);
-          },
-          child: const Text(
-            '戻る',
-            style: TextStyle(
-              fontSize: 15,
-              fontWeight: FontWeight.bold,
-              color: Colors.white,
-            ),
+        title: Text(
+          '投稿',
+          style: TextStyle(
+            fontWeight: FontWeight.bold,
+            letterSpacing: 2.0,
           ),
         ),
-        actions: [
-          IconButton(
-            onPressed: null,
-            icon: const Icon(null),
-          ),
-        ],
-        automaticallyImplyLeading: false,
-        title: Center(
-          child: const Text(
-            '😽みんなの投稿😽',
-            style: TextStyle(
-              fontWeight: FontWeight.bold,
-              letterSpacing: 2.0,
-            ),
-          ),
-        ),
-        backgroundColor: Colors.pink[100],
+        backgroundColor: Colors.pink.shade100,
       ),
-      body: SingleChildScrollView(
+      body: Padding(
+        padding: const EdgeInsets.all(8.0),
         child: Column(
           children: [
-            _PostSection(),
+            Form(
+              key: _formKey,
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  TextFormField(
+                    controller: _nameController,
+                    decoration: InputDecoration(
+                      labelText: 'タイトル',
+                      labelStyle: TextStyle(color: textColor),
+                    ),
+                    style: TextStyle(color: textColor),
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return 'タイトルを入力してね！';
+                      }
+                      return null;
+                    },
+                  ),
+                  TextFormField(
+                    controller: _prefecturesController,
+                    decoration: InputDecoration(
+                      labelText: '県名',
+                      labelStyle: TextStyle(color: textColor),
+                    ),
+                    style: const TextStyle(color: textColor),
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return '県名を入力してね！';
+                      }
+                      return null;
+                    },
+                  ),
+                  TextFormField(
+                    controller: _placeController,
+                    decoration: InputDecoration(
+                      labelText: '場所',
+                      labelStyle: TextStyle(color: textColor),
+                    ),
+                    style: const TextStyle(color: textColor),
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return '場所を入力してね！';
+                      }
+                      return null;
+                    },
+                  ),
+                  SizedBox(height: 20),
+                  ElevatedButton(
+                    onPressed: () async {
+                      if (_formKey.currentState!.validate()) {
+                        await _saveToFirebase();
+                      }
+                    },
+                    child: const Text('保存',
+                        style: TextStyle(
+                          color: textColor,
+                        )),
+                  ),
+                ],
+              ),
+            ),
           ],
         ),
       ),
     );
   }
-}
 
-// 1. データクラスを作成
-class PostInfo {
-  PostInfo({
-    required this.imagePath,
-    required this.iconPath,
-    required this.title,
-    required this.subTitle,
-  });
-  final String imagePath; // サムネイル画像のパス
-  final String iconPath; // アイコン画像のパス
-  final String title; // 動画タイトル
-  final String subTitle; // サブタイトル
-}
-
-// 2. ダミーデータの作成
-class _PostSection extends StatelessWidget {
-  _PostSection();
-
-  final List<PostInfo> _dummyMovieData = [
-    PostInfo(
-      imagePath: 'images/nekocyanPAKE4725-457_TP_V.webp',
-      iconPath: 'images/スクリーンショット 2024-11-28 19.30.27.png',
-      title: 'アメショー',
-      subTitle: '東京/とある公園',
-    ),
-    PostInfo(
-      imagePath: 'images/tomcatDSC09085_TP_V.webp',
-      iconPath: 'images/スクリーンショット 2024-11-28 19.30.27.png',
-      title: 'アメショー',
-      subTitle: '神奈川/とある公園',
-    ),
-    PostInfo(
-      imagePath: 'images/tomneko12151294_TP_V.webp',
-      iconPath: 'images/スクリーンショット 2024-11-28 19.30.27.png',
-      title: 'アメショー',
-      subTitle: '神奈川/とある公園',
-    ),
-    PostInfo(
-      imagePath: 'images/スクリーンショット 2024-11-28 19.30.27.png',
-      iconPath: 'images/tomneko12151294_TP_V.webp',
-      title: 'アメショー',
-      subTitle: '神奈川/とある公園',
-    ),
-  ];
-
-  @override
-  Widget build(BuildContext context) {
-    return Column(
-      children: [
-        ListView.builder(
-          itemCount: _dummyMovieData.length,
-          shrinkWrap: true,
-          physics: const NeverScrollableScrollPhysics(),
-          itemBuilder: (context, index) {
-            final data = _dummyMovieData[index];
-            return _PostList(data);
-          },
-        ),
-      ],
-    );
-  }
-}
-
-class _PostList extends StatelessWidget {
-  const _PostList(this.data);
-  final PostInfo data;
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      color: Colors.pink[100],
-      child: Column(
-        children: [
-          Image.asset(data.imagePath),
-          const SizedBox(height: 10),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Row(
-                children: [
-                  const SizedBox(width: 10),
-                  SizedBox(
-                    width: 35,
-                    child: ClipRRect(
-                      borderRadius: BorderRadius.circular(30),
-                      child: Image.asset(data.iconPath),
-                    ),
-                  ),
-                  const SizedBox(width: 10),
-                  Column(
-                    children: [
-                      Text(
-                        data.title,
-                        style: const TextStyle(
-                          color: Colors.white,
-                          fontSize: 14,
-                        ),
-                      ),
-                      const SizedBox(width: 54),
-                      Text(
-                        data.subTitle,
-                        style: TextStyle(
-                          color: Colors.white,
-                          fontSize: 14,
-                        ),
-                      ),
-                    ],
-                  ),
-                ],
-              ),
-              const SizedBox(width: 10),
-              const Column(
-                children: [
-                  Icon(Icons.more_vert, color: Colors.white),
-                  SizedBox(height: 14),
-                ],
-              ),
-            ],
-          ),
-          const SizedBox(height: 10),
-        ],
-      ),
-    );
+  Future<void> _saveToFirebase() async {
+    try {
+      await FirebaseFirestore.instance.collection('posts').add({
+        'title': _nameController.text,
+        'prefecture': _prefecturesController.text,
+        'place': _placeController.text,
+        'createdAt': FieldValue.serverTimestamp(),
+      });
+      Navigator.of(context).pop();
+    } catch (e) {
+      print('Error saving to Firebase: $e');
+    }
   }
 }
