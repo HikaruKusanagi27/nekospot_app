@@ -1,5 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
+import 'package:firebase_storage/firebase_storage.dart';
+import 'dart:io';
 
 class PostPage extends StatefulWidget {
   const PostPage({super.key});
@@ -19,9 +22,20 @@ class _PostPageState extends State<PostPage> {
   final TextEditingController _placeController = TextEditingController();
   static const textColor = Colors.black;
 
+  XFile? _image;
+
   @override
   void initState() {
     super.initState();
+  }
+
+  Future<void> _pickImage() async {
+    final ImagePicker picker = ImagePicker();
+    final XFile? pickedImage =
+        await picker.pickImage(source: ImageSource.gallery);
+    setState(() {
+      _image = pickedImage;
+    });
   }
 
   @override
@@ -42,6 +56,11 @@ class _PostPageState extends State<PostPage> {
         padding: const EdgeInsets.all(8.0),
         child: Column(
           children: [
+            ElevatedButton(
+              onPressed: _pickImage,
+              child: const Text('画像を選択'),
+            ),
+            if (_image != null) Image.file(File(_image!.path)),
             Form(
               key: _formKey,
               child: Column(
@@ -112,10 +131,19 @@ class _PostPageState extends State<PostPage> {
 
   Future<void> _saveToFirebase() async {
     try {
+      String? imageUrl;
+      if (_image != null) {
+        final storageRef =
+            FirebaseStorage.instance.ref().child('images/${_image!.name}');
+        await storageRef.putFile(File(_image!.path));
+        imageUrl = await storageRef.getDownloadURL();
+      }
+
       await FirebaseFirestore.instance.collection('posts').add({
         'title': _nameController.text,
         'prefecture': _prefecturesController.text,
         'place': _placeController.text,
+        'imageUrl': imageUrl,
         'createdAt': FieldValue.serverTimestamp(),
       });
       Navigator.of(context).pop();
