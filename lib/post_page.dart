@@ -133,8 +133,12 @@ class _PostPageState extends State<PostPage> {
     try {
       String? imageUrl;
       if (_image != null) {
-        final storageRef =
-            FirebaseStorage.instance.ref().child('images/${_image!.name}');
+        final fileName = DateTime.now().millisecondsSinceEpoch.toString();
+        final storageRef = FirebaseStorage.instance
+            .ref()
+            .child('post_images')
+            .child('$fileName.jpg');
+
         await storageRef.putFile(File(_image!.path));
         imageUrl = await storageRef.getDownloadURL();
       }
@@ -146,6 +150,7 @@ class _PostPageState extends State<PostPage> {
         'imageUrl': imageUrl,
         'createdAt': FieldValue.serverTimestamp(),
       });
+      if (!mounted) return;
       Navigator.of(context).pop();
     } catch (e) {
       print('Error saving to Firebase: $e');

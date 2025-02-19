@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:test/post_page.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 class PostListPage extends StatelessWidget {
   const PostListPage({super.key});
@@ -83,49 +84,45 @@ class PostInfo {
 
 // 2. ダミーデータの作成
 class _PostSection extends StatelessWidget {
-  _PostSection();
-
-  final List<PostInfo> _dummyMovieData = [
-    PostInfo(
-      imagePath: 'images/nekocyanPAKE4725-457_TP_V.webp',
-      iconPath: 'images/スクリーンショット 2024-11-28 19.30.27.png',
-      title: 'アメショー',
-      subTitle: '東京/とある公園',
-    ),
-    PostInfo(
-      imagePath: 'images/tomcatDSC09085_TP_V.webp',
-      iconPath: 'images/スクリーンショット 2024-11-28 19.30.27.png',
-      title: 'アメショー',
-      subTitle: '神奈川/とある公園',
-    ),
-    PostInfo(
-      imagePath: 'images/tomneko12151294_TP_V.webp',
-      iconPath: 'images/スクリーンショット 2024-11-28 19.30.27.png',
-      title: 'アメショー',
-      subTitle: '神奈川/とある公園',
-    ),
-    PostInfo(
-      imagePath: 'images/スクリーンショット 2024-11-28 19.30.27.png',
-      iconPath: 'images/tomneko12151294_TP_V.webp',
-      title: 'アメショー',
-      subTitle: '神奈川/とある公園',
-    ),
-  ];
+  const _PostSection();
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [
-        ListView.builder(
-          itemCount: _dummyMovieData.length,
+    return StreamBuilder<QuerySnapshot>(
+      // リアルタイムでデータを取得
+      stream: FirebaseFirestore.instance
+          .collection('posts')
+          .orderBy('createdAt', descending: true)
+          .snapshots(),
+      builder: (context, snapshot) {
+        if (snapshot.hasError) {
+          return const Center(child: Text('エラーが発生しました'));
+        }
+
+        if (snapshot.connectionState == ConnectionState.waiting) {
+          return const Center(child: CircularProgressIndicator());
+        }
+
+        final posts = snapshot.data!.docs;
+
+        return ListView.builder(
+          itemCount: posts.length,
           shrinkWrap: true,
           physics: const NeverScrollableScrollPhysics(),
           itemBuilder: (context, index) {
-            final data = _dummyMovieData[index];
-            return _PostList(data);
+            final data = posts[index].data() as Map<String, dynamic>;
+            return _PostList(
+              PostInfo(
+                imagePath: data['imageUrl'] ?? '',
+                iconPath:
+                    'images/スクリーンショット 2024-11-28 19.30.27.png', // デフォルトアイコン
+                title: data['title'] ?? '未設定',
+                subTitle: '${data['prefecture']} / ${data['place']}',
+              ),
+            );
           },
-        ),
-      ],
+        );
+      },
     );
   }
 }
@@ -140,7 +137,9 @@ class _PostList extends StatelessWidget {
       color: Colors.pink[100],
       child: Column(
         children: [
-          Image.asset(data.imagePath),
+          data.imagePath.isNotEmpty
+              ? Image.network(data.imagePath)
+              : const Placeholder(), // 画像がない場合のプレースホルダー
           const SizedBox(height: 10),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
