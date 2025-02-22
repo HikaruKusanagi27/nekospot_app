@@ -13,9 +13,6 @@ class PostPage extends StatefulWidget {
 
 class _PostPageState extends State<PostPage> {
   final _formKey = GlobalKey<FormState>();
-  String _name = '未設定';
-  String _prefectures = '未設定';
-  String _place = '未設定';
 
   final TextEditingController _nameController = TextEditingController();
   final TextEditingController _prefecturesController = TextEditingController();
