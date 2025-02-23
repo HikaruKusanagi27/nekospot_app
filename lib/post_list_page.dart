@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:test/post_page.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
+import 'models/post_info.dart';
+import 'providers/post_provider.dart';
 
 class PostListPage extends StatelessWidget {
   const PostListPage({super.key});
@@ -68,61 +70,26 @@ class PostListPage extends StatelessWidget {
   }
 }
 
-// 1. データクラスを作成
-class PostInfo {
-  PostInfo({
-    required this.imagePath,
-    required this.iconPath,
-    required this.title,
-    required this.subTitle,
-  });
-  final String imagePath; // サムネイル画像のパス
-  final String iconPath; // アイコン画像のパス
-  final String title; // 動画タイトル
-  final String subTitle; // サブタイトル
-}
-
-// 2. ダミーデータの作成
-class _PostSection extends StatelessWidget {
+class _PostSection extends ConsumerWidget {
   const _PostSection();
 
   @override
-  Widget build(BuildContext context) {
-    return StreamBuilder<QuerySnapshot>(
-      // リアルタイムでデータを取得
-      stream: FirebaseFirestore.instance
-          .collection('posts')
-          .orderBy('createdAt', descending: true)
-          .snapshots(),
-      builder: (context, snapshot) {
-        if (snapshot.hasError) {
-          return const Center(child: Text('エラーが発生しました'));
-        }
+  Widget build(BuildContext context, WidgetRef ref) {
+    final postsAsync = ref.watch(postStreamProvider);
 
-        if (snapshot.connectionState == ConnectionState.waiting) {
-          return const Center(child: CircularProgressIndicator());
-        }
-
-        final posts = snapshot.data!.docs;
-
+    return postsAsync.when(
+      data: (posts) {
         return ListView.builder(
           itemCount: posts.length,
           shrinkWrap: true,
           physics: const NeverScrollableScrollPhysics(),
           itemBuilder: (context, index) {
-            final data = posts[index].data() as Map<String, dynamic>;
-            return _PostList(
-              PostInfo(
-                imagePath: data['imageUrl'] ?? '',
-                iconPath:
-                    'images/スクリーンショット 2024-11-28 19.30.27.png', // デフォルトアイコン
-                title: data['title'] ?? '未設定',
-                subTitle: '${data['prefecture']} / ${data['place']}',
-              ),
-            );
+            return _PostList(posts[index]);
           },
         );
       },
+      loading: () => const Center(child: CircularProgressIndicator()),
+      error: (error, stack) => Center(child: Text('エラーが発生しました: $error')),
     );
   }
 }

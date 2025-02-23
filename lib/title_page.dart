@@ -107,7 +107,7 @@ class TitlePage extends StatelessWidget {
                           end: Alignment.bottomRight,
                         ),
                       ),
-                      padding: EdgeInsets.all(8), // Creates border effect
+                      padding: EdgeInsets.all(8),
                       child: ClipRRect(
                         borderRadius: BorderRadius.circular(110),
                         child: Image.asset(
