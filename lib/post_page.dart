@@ -20,6 +20,7 @@ class _PostPageState extends State<PostPage> {
   static const textColor = Colors.black;
 
   XFile? _image;
+  String? _imageError;
 
   @override
   void initState() {
@@ -32,6 +33,7 @@ class _PostPageState extends State<PostPage> {
         await picker.pickImage(source: ImageSource.gallery);
     setState(() {
       _image = pickedImage;
+      _imageError = null;
     });
   }
 
@@ -57,6 +59,15 @@ class _PostPageState extends State<PostPage> {
               onPressed: _pickImage,
               child: const Text('画像を選択'),
             ),
+            if (_imageError != null)
+              Padding(
+                padding: const EdgeInsets.only(top: 8.0),
+                child: Text(
+                  _imageError!,
+                  style: TextStyle(
+                      color: Theme.of(context).colorScheme.error, fontSize: 12),
+                ),
+              ),
             if (_image != null) Image.file(File(_image!.path)),
             Form(
               key: _formKey,
@@ -108,7 +119,10 @@ class _PostPageState extends State<PostPage> {
                   SizedBox(height: 20),
                   ElevatedButton(
                     onPressed: () async {
-                      if (_formKey.currentState!.validate()) {
+                      setState(() {
+                        _imageError = _image == null ? '画像を選択してね！' : null;
+                      });
+                      if (_formKey.currentState!.validate() && _image != null) {
                         await _saveToFirebase();
                       }
                     },
