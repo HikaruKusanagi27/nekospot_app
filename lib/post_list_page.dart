@@ -144,12 +144,12 @@ class _PostList extends StatelessWidget {
                 ],
               ),
               const SizedBox(width: 10),
-              const Column(
-                children: [
-                  Icon(Icons.more_vert, color: textColor),
-                  SizedBox(height: 14),
-                ],
-              ),
+              // const Column(
+              //   children: [
+              //     Icon(Icons.more_vert, color: textColor),
+              //     SizedBox(height: 14),
+              //   ],
+              // ),
             ],
           ),
           const SizedBox(height: 10),

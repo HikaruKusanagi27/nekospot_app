@@ -15,9 +15,62 @@ class _PostPageState extends State<PostPage> {
   final _formKey = GlobalKey<FormState>();
 
   final TextEditingController _nameController = TextEditingController();
-  final TextEditingController _prefecturesController = TextEditingController();
   final TextEditingController _placeController = TextEditingController();
   static const textColor = Colors.black;
+
+  // 都道府県リストを追加
+  final List<String> _prefectures = [
+    '北海道',
+    '青森県',
+    '岩手県',
+    '宮城県',
+    '秋田県',
+    '山形県',
+    '福島県',
+    '茨城県',
+    '栃木県',
+    '群馬県',
+    '埼玉県',
+    '千葉県',
+    '東京都',
+    '神奈川県',
+    '新潟県',
+    '富山県',
+    '石川県',
+    '福井県',
+    '山梨県',
+    '長野県',
+    '岐阜県',
+    '静岡県',
+    '愛知県',
+    '三重県',
+    '滋賀県',
+    '京都府',
+    '大阪府',
+    '兵庫県',
+    '奈良県',
+    '和歌山県',
+    '鳥取県',
+    '島根県',
+    '岡山県',
+    '広島県',
+    '山口県',
+    '徳島県',
+    '香川県',
+    '愛媛県',
+    '高知県',
+    '福岡県',
+    '佐賀県',
+    '長崎県',
+    '熊本県',
+    '大分県',
+    '宮崎県',
+    '鹿児島県',
+    '沖縄県'
+  ];
+
+  // 選択された都道府県を保持する変数
+  String? _selectedPrefecture;
 
   XFile? _image;
   String? _imageError;
@@ -57,7 +110,7 @@ class _PostPageState extends State<PostPage> {
           children: [
             ElevatedButton(
               onPressed: _pickImage,
-              child: const Text('画像を選択'),
+              child: const Text('画像を選択', style: TextStyle(color: textColor)),
             ),
             if (_imageError != null)
               Padding(
@@ -75,12 +128,15 @@ class _PostPageState extends State<PostPage> {
                 mainAxisSize: MainAxisSize.min,
                 children: [
                   TextFormField(
+                    cursorColor: textColor,
                     controller: _nameController,
                     decoration: InputDecoration(
                       labelText: 'タイトル',
                       labelStyle: TextStyle(color: textColor),
+                      focusedBorder: UnderlineInputBorder(
+                        borderSide: BorderSide(color: textColor),
+                      ),
                     ),
-                    style: TextStyle(color: textColor),
                     validator: (value) {
                       if (value == null || value.isEmpty) {
                         return 'タイトルを入力してね！';
@@ -88,25 +144,40 @@ class _PostPageState extends State<PostPage> {
                       return null;
                     },
                   ),
-                  TextFormField(
-                    controller: _prefecturesController,
+                  DropdownButtonFormField<String>(
+                    value: _selectedPrefecture,
                     decoration: InputDecoration(
                       labelText: '県名',
                       labelStyle: TextStyle(color: textColor),
                     ),
-                    style: const TextStyle(color: textColor),
+                    style: TextStyle(color: textColor),
+                    items: _prefectures.map((String prefecture) {
+                      return DropdownMenuItem<String>(
+                        value: prefecture,
+                        child: Text(prefecture),
+                      );
+                    }).toList(),
+                    onChanged: (String? newValue) {
+                      setState(() {
+                        _selectedPrefecture = newValue;
+                      });
+                    },
                     validator: (value) {
                       if (value == null || value.isEmpty) {
-                        return '県名を入力してね！';
+                        return '県名を選択してね！';
                       }
                       return null;
                     },
                   ),
                   TextFormField(
+                    cursorColor: textColor,
                     controller: _placeController,
                     decoration: InputDecoration(
                       labelText: '場所',
                       labelStyle: TextStyle(color: textColor),
+                      focusedBorder: UnderlineInputBorder(
+                        borderSide: BorderSide(color: textColor),
+                      ),
                     ),
                     style: const TextStyle(color: textColor),
                     validator: (value) {
@@ -126,10 +197,12 @@ class _PostPageState extends State<PostPage> {
                         await _saveToFirebase();
                       }
                     },
-                    child: const Text('保存',
-                        style: TextStyle(
-                          color: textColor,
-                        )),
+                    child: const Text(
+                      '保存',
+                      style: TextStyle(
+                        color: textColor,
+                      ),
+                    ),
                   ),
                 ],
               ),
@@ -156,7 +229,7 @@ class _PostPageState extends State<PostPage> {
 
       await FirebaseFirestore.instance.collection('posts').add({
         'title': _nameController.text,
-        'prefecture': _prefecturesController.text,
+        'prefecture': _selectedPrefecture,
         'place': _placeController.text,
         'imageUrl': imageUrl,
         'createdAt': FieldValue.serverTimestamp(),
