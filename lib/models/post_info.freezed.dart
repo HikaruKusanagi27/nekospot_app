@@ -17,9 +17,8 @@ final _privateConstructorUsedError = UnsupportedError(
 /// @nodoc
 mixin _$PostInfo {
   String get imagePath => throw _privateConstructorUsedError; // サムネイル画像のパス
-  String get iconPath => throw _privateConstructorUsedError; // アイコン画像のパス
   String get title => throw _privateConstructorUsedError; // 動画タイトル
-  String get subTitle => throw _privateConstructorUsedError;
+  String get place => throw _privateConstructorUsedError;
 
   /// Create a copy of PostInfo
   /// with the given fields replaced by the non-null parameter values.
@@ -33,7 +32,7 @@ abstract class $PostInfoCopyWith<$Res> {
   factory $PostInfoCopyWith(PostInfo value, $Res Function(PostInfo) then) =
       _$PostInfoCopyWithImpl<$Res, PostInfo>;
   @useResult
-  $Res call({String imagePath, String iconPath, String title, String subTitle});
+  $Res call({String imagePath, String title, String place});
 }
 
 /// @nodoc
@@ -52,26 +51,21 @@ class _$PostInfoCopyWithImpl<$Res, $Val extends PostInfo>
   @override
   $Res call({
     Object? imagePath = null,
-    Object? iconPath = null,
     Object? title = null,
-    Object? subTitle = null,
+    Object? place = null,
   }) {
     return _then(_value.copyWith(
       imagePath: null == imagePath
           ? _value.imagePath
           : imagePath // ignore: cast_nullable_to_non_nullable
               as String,
-      iconPath: null == iconPath
-          ? _value.iconPath
-          : iconPath // ignore: cast_nullable_to_non_nullable
-              as String,
       title: null == title
           ? _value.title
           : title // ignore: cast_nullable_to_non_nullable
               as String,
-      subTitle: null == subTitle
-          ? _value.subTitle
-          : subTitle // ignore: cast_nullable_to_non_nullable
+      place: null == place
+          ? _value.place
+          : place // ignore: cast_nullable_to_non_nullable
               as String,
     ) as $Val);
   }
@@ -85,7 +79,7 @@ abstract class _$$PostInfoImplCopyWith<$Res>
       __$$PostInfoImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({String imagePath, String iconPath, String title, String subTitle});
+  $Res call({String imagePath, String title, String place});
 }
 
 /// @nodoc
@@ -102,26 +96,21 @@ class __$$PostInfoImplCopyWithImpl<$Res>
   @override
   $Res call({
     Object? imagePath = null,
-    Object? iconPath = null,
     Object? title = null,
-    Object? subTitle = null,
+    Object? place = null,
   }) {
     return _then(_$PostInfoImpl(
       imagePath: null == imagePath
           ? _value.imagePath
           : imagePath // ignore: cast_nullable_to_non_nullable
               as String,
-      iconPath: null == iconPath
-          ? _value.iconPath
-          : iconPath // ignore: cast_nullable_to_non_nullable
-              as String,
       title: null == title
           ? _value.title
           : title // ignore: cast_nullable_to_non_nullable
               as String,
-      subTitle: null == subTitle
-          ? _value.subTitle
-          : subTitle // ignore: cast_nullable_to_non_nullable
+      place: null == place
+          ? _value.place
+          : place // ignore: cast_nullable_to_non_nullable
               as String,
     ));
   }
@@ -131,26 +120,20 @@ class __$$PostInfoImplCopyWithImpl<$Res>
 
 class _$PostInfoImpl implements _PostInfo {
   const _$PostInfoImpl(
-      {required this.imagePath,
-      required this.iconPath,
-      required this.title,
-      required this.subTitle});
+      {required this.imagePath, required this.title, required this.place});
 
   @override
   final String imagePath;
 // サムネイル画像のパス
   @override
-  final String iconPath;
-// アイコン画像のパス
-  @override
   final String title;
 // 動画タイトル
   @override
-  final String subTitle;
+  final String place;
 
   @override
   String toString() {
-    return 'PostInfo(imagePath: $imagePath, iconPath: $iconPath, title: $title, subTitle: $subTitle)';
+    return 'PostInfo(imagePath: $imagePath, title: $title, place: $place)';
   }
 
   @override
@@ -160,16 +143,12 @@ class _$PostInfoImpl implements _PostInfo {
             other is _$PostInfoImpl &&
             (identical(other.imagePath, imagePath) ||
                 other.imagePath == imagePath) &&
-            (identical(other.iconPath, iconPath) ||
-                other.iconPath == iconPath) &&
             (identical(other.title, title) || other.title == title) &&
-            (identical(other.subTitle, subTitle) ||
-                other.subTitle == subTitle));
+            (identical(other.place, place) || other.place == place));
   }
 
   @override
-  int get hashCode =>
-      Object.hash(runtimeType, imagePath, iconPath, title, subTitle);
+  int get hashCode => Object.hash(runtimeType, imagePath, title, place);
 
   /// Create a copy of PostInfo
   /// with the given fields replaced by the non-null parameter values.
@@ -183,18 +162,15 @@ class _$PostInfoImpl implements _PostInfo {
 abstract class _PostInfo implements PostInfo {
   const factory _PostInfo(
       {required final String imagePath,
-      required final String iconPath,
       required final String title,
-      required final String subTitle}) = _$PostInfoImpl;
+      required final String place}) = _$PostInfoImpl;
 
   @override
   String get imagePath; // サムネイル画像のパス
   @override
-  String get iconPath; // アイコン画像のパス
-  @override
   String get title; // 動画タイトル
   @override
-  String get subTitle;
+  String get place;
 
   /// Create a copy of PostInfo
   /// with the given fields replaced by the non-null parameter values.

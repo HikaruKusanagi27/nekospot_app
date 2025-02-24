@@ -108,33 +108,25 @@ class _PostList extends StatelessWidget {
               ? Image.network(data.imagePath)
               : const Placeholder(), // 画像がない場合のプレースホルダー
           const SizedBox(height: 10),
+
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Row(
                 children: [
                   const SizedBox(width: 10),
-                  SizedBox(
-                    width: 35,
-                    child: ClipRRect(
-                      borderRadius: BorderRadius.circular(30),
-                      child: Image.asset(data.iconPath),
-                    ),
-                  ),
-                  const SizedBox(width: 10),
                   Column(
                     children: [
-                      Text(
-                        data.title,
-                        style: const TextStyle(
-                          color: textColor,
-                          fontSize: 14,
+                      SizedBox(
+                        width: 35,
+                        child: ClipRRect(
+                          borderRadius: BorderRadius.circular(30),
+                          child: Image.asset(data.iconPath),
                         ),
                       ),
-                      const SizedBox(width: 54),
                       Text(
-                        data.subTitle,
-                        style: TextStyle(
+                        'ななしの猫さん',
+                        style: const TextStyle(
                           color: textColor,
                           fontSize: 14,
                         ),
@@ -143,13 +135,30 @@ class _PostList extends StatelessWidget {
                   ),
                 ],
               ),
-              const SizedBox(width: 10),
-              // const Column(
-              //   children: [
-              //     Icon(Icons.more_vert, color: textColor),
-              //     SizedBox(height: 14),
-              //   ],
-              // ),
+              Row(
+                children: [
+                  Column(
+                    children: [
+                      Text(
+                        'タイトル: ${data.title}',
+                        style: const TextStyle(
+                          color: textColor,
+                          fontSize: 14,
+                        ),
+                      ),
+                      const SizedBox(width: 54),
+                      Text(
+                        '場所: ${data.place}',
+                        style: TextStyle(
+                          color: textColor,
+                          fontSize: 14,
+                        ),
+                      ),
+                    ],
+                  ),
+                  const SizedBox(width: 10),
+                ],
+              ),
             ],
           ),
           const SizedBox(height: 10),

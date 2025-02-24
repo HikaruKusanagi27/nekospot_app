@@ -75,11 +75,6 @@ class _PostPageState extends State<PostPage> {
   XFile? _image;
   String? _imageError;
 
-  @override
-  void initState() {
-    super.initState();
-  }
-
   Future<void> _pickImage() async {
     final ImagePicker picker = ImagePicker();
     final XFile? pickedImage =
@@ -145,10 +140,14 @@ class _PostPageState extends State<PostPage> {
                     },
                   ),
                   DropdownButtonFormField<String>(
+                    dropdownColor: Colors.pink.shade100,
                     value: _selectedPrefecture,
                     decoration: InputDecoration(
                       labelText: '県名',
                       labelStyle: TextStyle(color: textColor),
+                      focusedBorder: UnderlineInputBorder(
+                        borderSide: BorderSide(color: textColor),
+                      ),
                     ),
                     style: TextStyle(color: textColor),
                     items: _prefectures.map((String prefecture) {
