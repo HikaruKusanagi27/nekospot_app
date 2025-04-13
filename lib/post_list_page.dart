@@ -121,7 +121,7 @@ class _PostList extends StatelessWidget {
                         width: 35,
                         child: ClipRRect(
                           borderRadius: BorderRadius.circular(30),
-                          child: Image.asset(data.iconPath),
+                          child: Image.asset('images/neko.jpg'),
                         ),
                       ),
                       Text(

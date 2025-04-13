@@ -12,9 +12,8 @@ final postStreamProvider = StreamProvider<List<PostInfo>>((ref) {
       final data = doc.data();
       return PostInfo(
         imagePath: data['imageUrl'] ?? '',
-        iconPath: 'images/neko.jpg',
         title: data['title'] ?? '未設定',
-        subTitle: '${data['prefecture']} / ${data['place']}',
+        place: data['place'] ?? '',
       );
     }).toList();
   });
