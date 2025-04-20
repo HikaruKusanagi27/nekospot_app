@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:test/post_page.dart';
+import 'dart:developer' as developer;
 import 'models/post_info.dart';
 import 'providers/post_provider.dart';
 
@@ -89,7 +90,17 @@ class _PostSection extends ConsumerWidget {
         );
       },
       loading: () => const Center(child: CircularProgressIndicator()),
-      error: (error, stack) => Center(child: Text('エラーが発生しました: $error')),
+      error: (error, stack) {
+        developer.log('PostListPage エラー: $error',
+            error: error, stackTrace: stack);
+        return Center(
+          child: Padding(
+            padding: const EdgeInsets.all(16.0),
+            child: Text('データの読み込みに失敗しました。\nエラー: $error',
+                textAlign: TextAlign.center),
+          ),
+        );
+      },
     );
   }
 }
@@ -102,6 +113,7 @@ class _PostList extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       color: Colors.pink[100],
+      padding: const EdgeInsets.only(top: 10, right: 10, bottom: 10),
       child: Column(
         children: [
           data.imagePath.isNotEmpty
@@ -112,26 +124,22 @@ class _PostList extends StatelessWidget {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Row(
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  const SizedBox(width: 10),
-                  Column(
-                    children: [
-                      SizedBox(
-                        width: 35,
-                        child: ClipRRect(
-                          borderRadius: BorderRadius.circular(30),
-                          child: Image.asset('images/neko.jpg'),
-                        ),
-                      ),
-                      Text(
-                        'ななしの猫さん',
-                        style: const TextStyle(
-                          color: textColor,
-                          fontSize: 14,
-                        ),
-                      ),
-                    ],
+                  SizedBox(
+                    width: 35,
+                    child: ClipRRect(
+                      borderRadius: BorderRadius.circular(30),
+                      child: Image.asset('images/neko.jpg'),
+                    ),
+                  ),
+                  Text(
+                    'ななしの猫さん',
+                    style: const TextStyle(
+                      color: textColor,
+                      fontSize: 14,
+                    ),
                   ),
                 ],
               ),
@@ -161,7 +169,6 @@ class _PostList extends StatelessWidget {
               ),
             ],
           ),
-          const SizedBox(height: 10),
         ],
       ),
     );

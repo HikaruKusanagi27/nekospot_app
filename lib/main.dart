@@ -13,7 +13,7 @@ void main() async {
     ProviderScope(
       child: MaterialApp(
         theme: ThemeData(
-          scaffoldBackgroundColor: Colors.pink.shade100,
+          colorScheme: ColorScheme.fromSeed(seedColor: Colors.pink),
           useMaterial3: true,
         ),
         home: const TitlePage(),
