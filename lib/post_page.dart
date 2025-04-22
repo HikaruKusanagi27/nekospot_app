@@ -128,7 +128,7 @@ class _PostPageState extends State<PostPage> {
                     controller: _nameController,
                     decoration: InputDecoration(
                       labelText: 'タイトル',
-                      labelStyle: TextStyle(color: ),
+                      labelStyle: TextStyle(color: textColor),
                       focusedBorder: UnderlineInputBorder(
                         borderSide: BorderSide(color: textColor),
                       ),
