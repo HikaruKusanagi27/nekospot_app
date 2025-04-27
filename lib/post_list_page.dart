@@ -113,63 +113,67 @@ class _PostList extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       color: Colors.pink[100],
-      padding: const EdgeInsets.only(top: 10, right: 10, bottom: 10),
-      child: Column(
-        children: [
-          data.imagePath.isNotEmpty
-              ? Image.network(data.imagePath)
-              : const Placeholder(), // 画像がない場合のプレースホルダー
-          const SizedBox(height: 10),
-
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      child: Card(
+        color: Colors.grey[100],
+        child: Padding(
+          padding: const EdgeInsets.all(10),
+          child: Column(
             children: [
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  SizedBox(
-                    width: 35,
-                    child: ClipRRect(
-                      borderRadius: BorderRadius.circular(30),
-                      child: Image.asset('images/neko.jpg'),
-                    ),
-                  ),
-                  Text(
-                    'ななしの猫さん',
-                    style: const TextStyle(
-                      color: textColor,
-                      fontSize: 14,
-                    ),
-                  ),
-                ],
-              ),
+              data.imagePath.isNotEmpty
+                  ? Image.network(data.imagePath)
+                  : const Placeholder(), // 画像がない場合のプレースホルダー
+
               Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text(
-                        'タイトル: ${data.title}',
-                        style: const TextStyle(
-                          color: textColor,
-                          fontSize: 14,
+                      SizedBox(
+                        width: 35,
+                        child: ClipRRect(
+                          borderRadius: BorderRadius.circular(30),
+                          child: Image.asset('images/neko.jpg'),
                         ),
                       ),
-                      const SizedBox(width: 54),
                       Text(
-                        '場所: ${data.place}',
-                        style: TextStyle(
+                        'ななしの猫さん',
+                        style: const TextStyle(
                           color: textColor,
                           fontSize: 14,
                         ),
                       ),
                     ],
                   ),
-                  const SizedBox(width: 10),
+                  Row(
+                    children: [
+                      Column(
+                        children: [
+                          Text(
+                            'タイトル: ${data.title}',
+                            style: const TextStyle(
+                              color: textColor,
+                              fontSize: 14,
+                            ),
+                          ),
+                          const SizedBox(width: 54),
+                          Text(
+                            '場所: ${data.place}',
+                            style: TextStyle(
+                              color: textColor,
+                              fontSize: 14,
+                            ),
+                          ),
+                        ],
+                      ),
+                      const SizedBox(width: 10),
+                    ],
+                  ),
                 ],
               ),
             ],
           ),
-        ],
+        ),
       ),
     );
   }
