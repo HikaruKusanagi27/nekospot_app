@@ -81,7 +81,7 @@ class TitlePage extends StatelessWidget {
                       borderRadius: BorderRadius.circular(100),
                       boxShadow: [
                         BoxShadow(
-                          color: Colors.grey.withOpacity(0.5),
+                          color: Colors.grey.shade500,
                           spreadRadius: 5,
                           blurRadius: 15,
                         ),
