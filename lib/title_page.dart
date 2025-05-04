@@ -6,18 +6,10 @@ class TitlePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final colorScheme = Theme.of(context).colorScheme;
     return Scaffold(
       body: Container(
-        decoration: BoxDecoration(
-          gradient: LinearGradient(
-            begin: Alignment.topCenter,
-            end: Alignment.bottomCenter,
-            colors: [
-              Colors.pink.shade50,
-              Colors.pink.shade100,
-            ],
-          ),
-        ),
+        color: colorScheme.surface,
         child: Center(
           child: Column(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -48,7 +40,7 @@ class TitlePage extends StatelessWidget {
                     child: ElevatedButton.icon(
                       icon: Icon(
                         Icons.pets,
-                        color: Colors.pink.shade400,
+                        color: Theme.of(context).colorScheme.primary,
                       ),
                       label: Text('はじめる'),
                       onPressed: () {
@@ -61,7 +53,7 @@ class TitlePage extends StatelessWidget {
                       },
                       style: ElevatedButton.styleFrom(
                         backgroundColor: Colors.white,
-                        foregroundColor: Colors.pink[400],
+                        foregroundColor: Theme.of(context).colorScheme.primary,
                         padding:
                             EdgeInsets.symmetric(horizontal: 30, vertical: 15),
                         textStyle: TextStyle(
@@ -81,7 +73,7 @@ class TitlePage extends StatelessWidget {
                       borderRadius: BorderRadius.circular(100),
                       boxShadow: [
                         BoxShadow(
-                          color: Colors.grey.shade500,
+                          color: colorScheme.onSurface.withAlpha(77),
                           spreadRadius: 5,
                           blurRadius: 15,
                         ),
@@ -92,7 +84,7 @@ class TitlePage extends StatelessWidget {
                         borderRadius: BorderRadius.circular(120),
                         boxShadow: [
                           BoxShadow(
-                            color: Colors.pink.shade200,
+                            color: colorScheme.primary.withAlpha(128),
                             spreadRadius: 5,
                             blurRadius: 15,
                             offset: Offset(0, 5),
@@ -100,8 +92,8 @@ class TitlePage extends StatelessWidget {
                         ],
                         gradient: LinearGradient(
                           colors: [
-                            Colors.pink.shade100,
-                            Colors.purple.shade100
+                            colorScheme.primary.withAlpha(77),
+                            colorScheme.tertiary.withAlpha(77)
                           ],
                           begin: Alignment.topLeft,
                           end: Alignment.bottomRight,
