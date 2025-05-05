@@ -15,7 +15,7 @@ class PostListPage extends StatelessWidget {
   Widget build(BuildContext context) {
     final colorScheme = Theme.of(context).colorScheme;
     return Scaffold(
-      backgroundColor: colorScheme.surface,
+      backgroundColor: Colors.white,
       appBar: AppBar(
         backgroundColor: colorScheme.primary,
         leading: IconButton(
@@ -105,8 +105,9 @@ class _PostList extends StatelessWidget {
   static const textColor = Colors.black;
   @override
   Widget build(BuildContext context) {
+    final colorScheme = Theme.of(context).colorScheme;
     return Card(
-      color: Colors.grey[100],
+      color: colorScheme.surface,
       child: Padding(
         padding: const EdgeInsets.all(10),
         child: Column(
@@ -121,6 +122,7 @@ class _PostList extends StatelessWidget {
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
+                    SizedBox(height: 10),
                     SizedBox(
                       width: 35,
                       child: ClipRRect(

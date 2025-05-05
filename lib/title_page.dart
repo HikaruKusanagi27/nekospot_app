@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:test/post_list_page.dart';
-import 'package:test/main.dart'; // AppColorsとTextThemeExtensionを使うため
 
 class TitlePage extends StatelessWidget {
   const TitlePage({super.key});
@@ -8,11 +7,8 @@ class TitlePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final colorScheme = Theme.of(context).colorScheme;
-    final textTheme =
-        Theme.of(context).extension<TextThemeExtension>(); // 拡張テーマを取得
 
     return Scaffold(
-      backgroundColor: colorScheme.primary,
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -26,20 +22,13 @@ class TitlePage extends StatelessWidget {
                     fontSize: 40.0,
                     fontWeight: FontWeight.bold,
                     letterSpacing: 2.0,
-                    color: textTheme?.textEmphasized, // 拡張テーマの色を使用
+                    color: colorScheme.onPrimary,
                   ),
                 ),
                 SizedBox(height: 20),
                 Container(
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(30),
-                    boxShadow: [
-                      BoxShadow(
-                        color: Colors.pink.shade200,
-                        spreadRadius: 2,
-                        blurRadius: 10,
-                      ),
-                    ],
                   ),
                   child: ElevatedButton.icon(
                     icon: Icon(
@@ -64,7 +53,7 @@ class TitlePage extends StatelessWidget {
                       );
                     },
                     style: ElevatedButton.styleFrom(
-                      backgroundColor: colorScheme.surface,
+                      backgroundColor: Colors.white,
                       foregroundColor: colorScheme.secondary,
                       padding:
                           EdgeInsets.symmetric(horizontal: 30, vertical: 15),
@@ -82,44 +71,24 @@ class TitlePage extends StatelessWidget {
                 SizedBox(height: 50),
                 Container(
                   decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(100),
-                    boxShadow: [
-                      BoxShadow(
-                        color: colorScheme.onSurface.withAlpha(77),
-                        spreadRadius: 5,
-                        blurRadius: 15,
-                      ),
-                    ],
-                  ),
-                  child: Container(
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(120),
-                      boxShadow: [
-                        BoxShadow(
-                          color: colorScheme.primary.withAlpha(128),
-                          spreadRadius: 5,
-                          blurRadius: 15,
-                          offset: Offset(0, 5),
-                        ),
+                    borderRadius: BorderRadius.circular(120),
+                    gradient: LinearGradient(
+                      colors: [
+                        colorScheme.primary.withAlpha(77),
+                        colorScheme.tertiary.withAlpha(77)
                       ],
-                      gradient: LinearGradient(
-                        colors: [
-                          colorScheme.primary.withAlpha(77),
-                          colorScheme.tertiary.withAlpha(77)
-                        ],
-                        begin: Alignment.topLeft,
-                        end: Alignment.bottomRight,
-                      ),
+                      begin: Alignment.topLeft,
+                      end: Alignment.bottomRight,
                     ),
-                    padding: EdgeInsets.all(8),
-                    child: ClipRRect(
-                      borderRadius: BorderRadius.circular(110),
-                      child: Image.asset(
-                        'images/cat-5098930_640.jpg',
-                        height: 400,
-                        width: 400,
-                        fit: BoxFit.cover,
-                      ),
+                  ),
+                  padding: EdgeInsets.all(8),
+                  child: ClipRRect(
+                    borderRadius: BorderRadius.circular(110),
+                    child: Image.asset(
+                      'images/cat-5098930_640.jpg',
+                      height: 400,
+                      width: 400,
+                      fit: BoxFit.cover,
                     ),
                   ),
                 ),

@@ -22,7 +22,7 @@ void main() async {
           colorScheme: ColorScheme(
             brightness: Brightness.light,
             primary: Colors.pink.shade100,
-            surface: Colors.white,
+            surface: Colors.pink.shade100,
             onPrimary: Colors.black,
             secondary: Colors.pinkAccent,
             onSecondary: Colors.white,
@@ -33,52 +33,9 @@ void main() async {
             onSurface: Colors.black,
           ),
           useMaterial3: true,
-          // ThemeDataに拡張プロパティとして追加のテキストカラーを登録
-          extensions: [
-            TextThemeExtension(
-              textAlt: AppColors.textAlt,
-              textEmphasized: AppColors.textEmphasized,
-            ),
-          ],
         ),
         home: const TitlePage(),
       ),
     ),
   );
-}
-
-// テーマを拡張するクラス
-class TextThemeExtension extends ThemeExtension<TextThemeExtension> {
-  final Color textAlt;
-  final Color textEmphasized;
-
-  TextThemeExtension({
-    required this.textAlt,
-    required this.textEmphasized,
-  });
-
-  @override
-  ThemeExtension<TextThemeExtension> copyWith({
-    Color? textAlt,
-    Color? textEmphasized,
-  }) {
-    return TextThemeExtension(
-      textAlt: textAlt ?? this.textAlt,
-      textEmphasized: textEmphasized ?? this.textEmphasized,
-    );
-  }
-
-  @override
-  ThemeExtension<TextThemeExtension> lerp(
-    covariant ThemeExtension<TextThemeExtension>? other,
-    double t,
-  ) {
-    if (other is! TextThemeExtension) {
-      return this;
-    }
-    return TextThemeExtension(
-      textAlt: Color.lerp(textAlt, other.textAlt, t)!,
-      textEmphasized: Color.lerp(textEmphasized, other.textEmphasized, t)!,
-    );
-  }
 }
