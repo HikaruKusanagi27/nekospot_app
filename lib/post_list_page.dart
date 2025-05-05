@@ -13,20 +13,16 @@ class PostListPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final colorScheme = Theme.of(context).colorScheme;
     return Scaffold(
+      backgroundColor: colorScheme.surface,
       appBar: AppBar(
-        leading: TextButton(
+        backgroundColor: colorScheme.primary,
+        leading: IconButton(
           onPressed: () {
             Navigator.pop(context);
           },
-          child: const Text(
-            '戻る',
-            style: TextStyle(
-              fontSize: 15,
-              fontWeight: FontWeight.bold,
-              color: textColor,
-            ),
-          ),
+          icon: const Icon(Icons.arrow_back),
         ),
         actions: [
           IconButton(
@@ -36,16 +32,15 @@ class PostListPage extends StatelessWidget {
         ],
         automaticallyImplyLeading: false,
         title: Center(
-          child: const Text(
-            '😽みんなの投稿😽',
+          child: Text(
+            'みんなの投稿',
             style: TextStyle(
               fontWeight: FontWeight.bold,
               letterSpacing: 2.0,
-              color: textColor,
+              color: Theme.of(context).colorScheme.onPrimary,
             ),
           ),
         ),
-        backgroundColor: Colors.pink.shade100,
       ),
       body: SingleChildScrollView(
         child: Column(
@@ -64,7 +59,6 @@ class PostListPage extends StatelessWidget {
             ),
           );
         },
-        backgroundColor: Colors.pink.shade200,
         child: const Icon(Icons.add_a_photo),
       ),
     );
@@ -111,68 +105,65 @@ class _PostList extends StatelessWidget {
   static const textColor = Colors.black;
   @override
   Widget build(BuildContext context) {
-    return Container(
-      color: Colors.pink[100],
-      child: Card(
-        color: Colors.grey[100],
-        child: Padding(
-          padding: const EdgeInsets.all(10),
-          child: Column(
-            children: [
-              data.imagePath.isNotEmpty
-                  ? Image.network(data.imagePath)
-                  : const Placeholder(), // 画像がない場合のプレースホルダー
+    return Card(
+      color: Colors.grey[100],
+      child: Padding(
+        padding: const EdgeInsets.all(10),
+        child: Column(
+          children: [
+            data.imagePath.isNotEmpty
+                ? Image.network(data.imagePath)
+                : const Placeholder(), // 画像がない場合のプレースホルダー
 
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      SizedBox(
-                        width: 35,
-                        child: ClipRRect(
-                          borderRadius: BorderRadius.circular(30),
-                          child: Image.asset('images/neko.jpg'),
-                        ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    SizedBox(
+                      width: 35,
+                      child: ClipRRect(
+                        borderRadius: BorderRadius.circular(30),
+                        child: Image.asset('images/neko.jpg'),
                       ),
-                      Text(
-                        'ななしの猫さん',
-                        style: const TextStyle(
-                          color: textColor,
-                          fontSize: 14,
-                        ),
+                    ),
+                    Text(
+                      'ななしの猫さん',
+                      style: const TextStyle(
+                        color: textColor,
+                        fontSize: 14,
                       ),
-                    ],
-                  ),
-                  Row(
-                    children: [
-                      Column(
-                        children: [
-                          Text(
-                            'タイトル: ${data.title}',
-                            style: const TextStyle(
-                              color: textColor,
-                              fontSize: 14,
-                            ),
+                    ),
+                  ],
+                ),
+                Row(
+                  children: [
+                    Column(
+                      children: [
+                        Text(
+                          'タイトル: ${data.title}',
+                          style: const TextStyle(
+                            color: textColor,
+                            fontSize: 14,
                           ),
-                          const SizedBox(width: 54),
-                          Text(
-                            '場所: ${data.place}',
-                            style: TextStyle(
-                              color: textColor,
-                              fontSize: 14,
-                            ),
+                        ),
+                        const SizedBox(width: 54),
+                        Text(
+                          '場所: ${data.place}',
+                          style: TextStyle(
+                            color: textColor,
+                            fontSize: 14,
                           ),
-                        ],
-                      ),
-                      const SizedBox(width: 10),
-                    ],
-                  ),
-                ],
-              ),
-            ],
-          ),
+                        ),
+                      ],
+                    ),
+                    const SizedBox(width: 10),
+                  ],
+                ),
+              ],
+            ),
+          ],
         ),
       ),
     );
