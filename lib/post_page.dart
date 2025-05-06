@@ -1,8 +1,9 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:flutter/material.dart';
 import 'package:flutter/foundation.dart';
+import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:firebase_storage/firebase_storage.dart';
+import 'package:image/image.dart' as image_lib;
 import 'dart:io';
 
 class PostPage extends StatefulWidget {
@@ -13,11 +14,45 @@ class PostPage extends StatefulWidget {
 }
 
 class _PostPageState extends State<PostPage> {
+  // 画像選択のためのImagePickerを追加
+  final ImagePicker _picker = ImagePicker();
+  Uint8List? _imageBitmap;
   final _formKey = GlobalKey<FormState>();
-
   final TextEditingController _nameController = TextEditingController();
   final TextEditingController _placeController = TextEditingController();
   static const textColor = Colors.black;
+
+  Future<void> _selectImage() async {
+    // ファイルの抽象化クラス
+    // 画像を選択する
+    final XFile? imageFile =
+        await _picker.pickImage(source: ImageSource.gallery);
+
+    // ファイルオブジェクトから画像データを取得する
+    final imageBitmap = await imageFile?.readAsBytes();
+    assert(imageBitmap != null);
+    if (imageBitmap == null) return;
+
+    // 画像データをデコードする
+    final image = image_lib.decodeImage(imageBitmap);
+    assert(image != null);
+    if (image == null) return;
+
+    // 画像データとメタデータを内包したクラス
+    final image_lib.Image resizedImage;
+    if (image.width > image.height) {
+      // 横長の画像なら横幅を500にリサイズする
+      resizedImage = image_lib.copyResize(image, width: 500);
+    } else {
+      // 縦長の画像なら縦幅を500にリサイズする
+      resizedImage = image_lib.copyResize(image, height: 500);
+    }
+
+    // 画像をエンコードして状態を更新する
+    setState(() {
+      _imageBitmap = image_lib.encodeBmp(resizedImage);
+    });
+  }
 
   // 都道府県リストを追加
   final List<String> _prefectures = [
