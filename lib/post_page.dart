@@ -111,18 +111,9 @@ class _PostPageState extends State<PostPage> {
   XFile? _image;
   String? _imageError;
 
-  Future<void> _pickImage() async {
-    final ImagePicker picker = ImagePicker();
-    final XFile? pickedImage =
-        await picker.pickImage(source: ImageSource.gallery);
-    setState(() {
-      _image = pickedImage;
-      _imageError = null;
-    });
-  }
-
   @override
   Widget build(BuildContext context) {
+    final imageBitmap = _imageBitmap;
     return Scaffold(
       backgroundColor: Colors.pink.shade100,
       appBar: AppBar(
@@ -139,10 +130,16 @@ class _PostPageState extends State<PostPage> {
         padding: const EdgeInsets.all(8.0),
         child: Column(
           children: [
+            if (imageBitmap != null) Image.memory(imageBitmap),
             ElevatedButton(
-              onPressed: _pickImage,
+              onPressed: _selectImage,
               child: const Text('画像を選択', style: TextStyle(color: textColor)),
             ),
+            if (imageBitmap != null)
+              ElevatedButton(
+                onPressed: _selectImage,
+                child: const Text('画像の編集', style: TextStyle(color: textColor)),
+              ),
             if (_imageError != null)
               Padding(
                 padding: const EdgeInsets.only(top: 8.0),
