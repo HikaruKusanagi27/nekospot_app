@@ -137,7 +137,7 @@ class _PostPageState extends State<PostPage> {
             ),
             if (imageBitmap != null)
               ElevatedButton(
-                onPressed: _selectImage,
+                onPressed: null,
                 child: const Text('画像の編集', style: TextStyle(color: textColor)),
               ),
             if (_imageError != null)
