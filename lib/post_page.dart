@@ -38,19 +38,19 @@ class _PostPageState extends State<PostPage> {
     assert(image != null);
     if (image == null) return;
 
-    // 画像データとメタデータを内包したクラス
-    final image_lib.Image resizedImage;
-    if (image.width > image.height) {
-      // 横長の画像なら横幅を500にリサイズする
-      resizedImage = image_lib.copyResize(image, width: 500);
-    } else {
-      // 縦長の画像なら縦幅を500にリサイズする
-      resizedImage = image_lib.copyResize(image, height: 500);
-    }
+    // // 画像データとメタデータを内包したクラス
+    // final image_lib.Image resizedImage;
+    // if (image.width > image.height) {
+    //   // 横長の画像なら横幅を500にリサイズする
+    //   resizedImage = image_lib.copyResize(image, width: 500);
+    // } else {
+    //   // 縦長の画像なら縦幅を500にリサイズする
+    //   resizedImage = image_lib.copyResize(image, height: 500);
+    // }
 
     // 画像をエンコードして状態を更新する
     setState(() {
-      _imageBitmap = image_lib.encodeBmp(resizedImage);
+      _imageBitmap = image_lib.encodeBmp(image);
     });
   }
 
