@@ -115,7 +115,7 @@ class _PostPageState extends State<PostPage> {
   Widget build(BuildContext context) {
     final imageBitmap = _imageBitmap;
     return Scaffold(
-      backgroundColor: Colors.pink.shade100,
+      backgroundColor: Colors.white,
       appBar: AppBar(
         title: Text(
           '投稿',
