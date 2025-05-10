@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:test/post_list_page.dart';
+import 'package:test/loading_demo_page.dart';
 
 class TitlePage extends StatelessWidget {
   const TitlePage({super.key});
@@ -18,7 +20,7 @@ class TitlePage extends StatelessWidget {
               children: [
                 Text(
                   '猫スナップ',
-                  style: TextStyle(
+                  style: GoogleFonts.cabin(
                     fontSize: 40.0,
                     fontWeight: FontWeight.bold,
                     letterSpacing: 2.0,
