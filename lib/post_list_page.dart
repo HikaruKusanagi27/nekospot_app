@@ -42,12 +42,8 @@ class PostListPage extends StatelessWidget {
           ),
         ),
       ),
-      body: SingleChildScrollView(
-        child: Column(
-          children: [
-            _PostSection(),
-          ],
-        ),
+      body: Center(
+        child: _PostSection(),
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
@@ -74,13 +70,23 @@ class _PostSection extends ConsumerWidget {
 
     return postsAsync.when(
       data: (posts) {
-        return ListView.builder(
-          itemCount: posts.length,
-          shrinkWrap: true,
-          physics: const NeverScrollableScrollPhysics(),
-          itemBuilder: (context, index) {
-            return _PostList(posts[index]);
-          },
+        if (posts.isEmpty) {
+          return const Center(
+            child: Text(
+              '投稿がありません',
+              style: TextStyle(fontSize: 16),
+            ),
+          );
+        }
+        return SingleChildScrollView(
+          child: ListView.builder(
+            itemCount: posts.length,
+            shrinkWrap: true,
+            physics: const NeverScrollableScrollPhysics(),
+            itemBuilder: (context, index) {
+              return _PostList(posts[index]);
+            },
+          ),
         );
       },
       loading: () => const Center(child: CircularProgressIndicator()),
@@ -89,9 +95,35 @@ class _PostSection extends ConsumerWidget {
             error: error, stackTrace: stack);
         return Center(
           child: Padding(
-            padding: const EdgeInsets.all(16.0),
-            child: Text('データの読み込みに失敗しました。\nエラー: $error',
-                textAlign: TextAlign.center),
+            padding: const EdgeInsets.all(32.0),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                const Icon(
+                  Icons.error_outline,
+                  color: Colors.red,
+                  size: 60,
+                ),
+                const SizedBox(height: 16),
+                Text(
+                  'データの読み込みに失敗しました',
+                  textAlign: TextAlign.center,
+                  style: const TextStyle(
+                    fontSize: 18.0,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+                const SizedBox(height: 8),
+                Text(
+                  'エラー: $error',
+                  textAlign: TextAlign.center,
+                  style: const TextStyle(
+                    fontSize: 14.0,
+                    color: Colors.grey,
+                  ),
+                ),
+              ],
+            ),
           ),
         );
       },
