@@ -19,7 +19,7 @@ class TitlePage extends StatelessWidget {
               children: [
                 Text(
                   '猫スナップ',
-                  style: GoogleFonts.cabin(
+                  style: GoogleFonts.sawarabiMincho(
                     fontSize: 40.0,
                     fontWeight: FontWeight.bold,
                     letterSpacing: 2.0,
@@ -61,17 +61,6 @@ class TitlePage extends StatelessWidget {
                 ),
                 SizedBox(height: 20),
                 Container(
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(120),
-                    gradient: LinearGradient(
-                      colors: [
-                        colorScheme.primary.withAlpha(77),
-                        colorScheme.tertiary.withAlpha(77)
-                      ],
-                      begin: Alignment.topLeft,
-                      end: Alignment.bottomRight,
-                    ),
-                  ),
                   padding: EdgeInsets.all(8),
                   child: ClipRRect(
                     borderRadius: BorderRadius.circular(110),
