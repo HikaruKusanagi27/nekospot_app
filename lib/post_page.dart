@@ -132,6 +132,9 @@ class _PostPageState extends State<PostPage> {
           children: [
             if (imageBitmap != null) Image.memory(imageBitmap),
             ElevatedButton(
+              style: ElevatedButton.styleFrom(
+                backgroundColor: Colors.grey.shade300,
+              ),
               onPressed: _selectImage,
               child: const Text('画像を選択', style: TextStyle(color: textColor)),
             ),
@@ -221,6 +224,9 @@ class _PostPageState extends State<PostPage> {
                   ),
                   SizedBox(height: 20),
                   ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: Colors.grey.shade300,
+                    ),
                     onPressed: () async {
                       setState(() {
                         _imageError = _image == null ? '画像を選択してね！' : null;
