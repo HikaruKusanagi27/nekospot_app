@@ -2,84 +2,69 @@ import 'package:flutter/material.dart';
 import 'package:flutter/foundation.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:image/image.dart' as image_lib;
+import 'package:freezed_annotation/freezed_annotation.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-enum PostStateStatus {
-  initial,
-  loading,
-  loaded,
-  error,
-}
+part 'post_state.freezed.dart';
 
-class PostState {
-  final PostStateStatus status;
-  final Uint8List? imageBitmap;
-  final String? errorMessage;
-
-  const PostState({
-    this.status = PostStateStatus.initial,
-    this.imageBitmap,
-    this.errorMessage,
-  });
-
-  factory PostState.initial() => const PostState();
-
-  factory PostState.loading() => const PostState(
-        status: PostStateStatus.loading,
-      );
-
-  factory PostState.loaded(Uint8List imageBitmap) => PostState(
-        status: PostStateStatus.loaded,
-        imageBitmap: imageBitmap,
-      );
-
-  factory PostState.error(String message) => PostState(
-        status: PostStateStatus.error,
-        errorMessage: message,
-      );
-
-  PostState copyWith({
-    PostStateStatus? status,
+@freezed
+class PostState with _$PostState {
+  const factory PostState({
+    @Default(false) bool isLoading,
     Uint8List? imageBitmap,
-    String? errorMessage,
-  }) {
-    return PostState(
-      status: status ?? this.status,
-      imageBitmap: imageBitmap ?? this.imageBitmap,
-      errorMessage: errorMessage ?? this.errorMessage,
-    );
-  }
+    @Default('') String errorMessage,
+  }) = _PostState;
 }
 
-class ImageSelector {
+final postViewModelProvider =
+    StateNotifierProvider<PostViewModel, PostState>((ref) {
+  return PostViewModel();
+});
+
+class PostViewModel extends StateNotifier<PostState> {
+  PostViewModel() : super(const PostState());
+
   final ImagePicker _picker = ImagePicker();
 
-  Future<PostState> selectImage() async {
+  Future<void> selectImage() async {
+    state = state.copyWith(isLoading: true);
+
     try {
       // 画像を選択する
       final XFile? imageFile =
           await _picker.pickImage(source: ImageSource.gallery);
-
       if (imageFile == null) {
-        return PostState.error('画像が選択されませんでした');
+        state = state.copyWith(
+          isLoading: false,
+          errorMessage: '画像が選択されませんでした',
+        );
+        return;
       }
 
       // ファイルオブジェクトから画像データを取得する
       final imageBitmap = await imageFile.readAsBytes();
-      if (imageBitmap.isEmpty) {
-        return PostState.error('画像データを取得できませんでした');
-      }
 
       // 画像データをデコードする
       final image = image_lib.decodeImage(imageBitmap);
       if (image == null) {
-        return PostState.error('画像のデコードに失敗しました');
+        state = state.copyWith(
+          isLoading: false,
+          errorMessage: '画像の処理に失敗しました',
+        );
+        return;
       }
 
       // 画像をエンコードして状態を更新する
-      final encodedImage = image_lib.encodeBmp(image);
-      return PostState.loaded(encodedImage);
+      state = state.copyWith(
+        isLoading: false,
+        imageBitmap: image_lib.encodeBmp(image),
+        errorMessage: '',
+      );
     } catch (e) {
-      return PostState.error('エラーが発生しました: $e');
+      state = state.copyWith(
+        isLoading: false,
+        errorMessage: '画像の処理中にエラーが発生しました: $e',
+      );
     }
   }
 }
