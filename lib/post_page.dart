@@ -5,18 +5,19 @@ import 'package:image_picker/image_picker.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:image/image.dart' as image_lib;
 import 'dart:io';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'post_state.dart';
 
-class PostPage extends StatefulWidget {
+class PostPage extends ConsumerStatefulWidget {
   const PostPage({super.key});
 
   @override
-  State<PostPage> createState() => _PostPageState();
+  ConsumerState<PostPage> createState() => _PostPageState();
 }
 
-class _PostPageState extends State<PostPage> {
+class _PostPageState extends ConsumerState<PostPage> {
   // 画像選択のためのImagePickerを追加
   final ImagePicker _picker = ImagePicker();
-  Uint8List? _imageBitmap;
   final _formKey = GlobalKey<FormState>();
   final TextEditingController _nameController = TextEditingController();
   final TextEditingController _placeController = TextEditingController();
@@ -81,7 +82,9 @@ class _PostPageState extends State<PostPage> {
 
   @override
   Widget build(BuildContext context) {
-    final imageBitmap = _imageBitmap;
+    final postState = ref.watch(postViewModelProvider);
+    final imageBitmap = postState.imageBitmap;
+
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
@@ -99,14 +102,21 @@ class _PostPageState extends State<PostPage> {
         child: Column(
           children: [
             if (imageBitmap != null) Image.memory(imageBitmap),
+            if (postState.isLoading) const CircularProgressIndicator(),
+            if (postState.errorMessage.isNotEmpty)
+              Text(
+                postState.errorMessage,
+                style: TextStyle(color: Theme.of(context).colorScheme.error),
+              ),
             ElevatedButton(
               style: ElevatedButton.styleFrom(
                 backgroundColor: Colors.white,
               ),
-              onPressed: _selectImage,
+              onPressed: () =>
+                  ref.read(postViewModelProvider.notifier).selectImage(),
               child: const Text('画像を選択', style: TextStyle(color: textColor)),
             ),
-            if (imageBitmap != null)
+            if (postState.imageBitmap != null)
               ElevatedButton(
                 onPressed: null,
                 child: const Text('画像の編集', style: TextStyle(color: textColor)),
