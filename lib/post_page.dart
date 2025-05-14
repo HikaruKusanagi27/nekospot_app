@@ -22,38 +22,6 @@ class _PostPageState extends State<PostPage> {
   final TextEditingController _placeController = TextEditingController();
   static const textColor = Colors.black;
 
-  Future<void> _selectImage() async {
-    // ファイルの抽象化クラス
-    // 画像を選択する
-    final XFile? imageFile =
-        await _picker.pickImage(source: ImageSource.gallery);
-
-    // ファイルオブジェクトから画像データを取得する
-    final imageBitmap = await imageFile?.readAsBytes();
-    assert(imageBitmap != null);
-    if (imageBitmap == null) return;
-
-    // 画像データをデコードする
-    final image = image_lib.decodeImage(imageBitmap);
-    assert(image != null);
-    if (image == null) return;
-
-    // // 画像データとメタデータを内包したクラス
-    // final image_lib.Image resizedImage;
-    // if (image.width > image.height) {
-    //   // 横長の画像なら横幅を500にリサイズする
-    //   resizedImage = image_lib.copyResize(image, width: 500);
-    // } else {
-    //   // 縦長の画像なら縦幅を500にリサイズする
-    //   resizedImage = image_lib.copyResize(image, height: 500);
-    // }
-
-    // 画像をエンコードして状態を更新する
-    setState(() {
-      _imageBitmap = image_lib.encodeBmp(image);
-    });
-  }
-
   // 都道府県リストを追加
   final List<String> _prefectures = [
     '北海道',
@@ -133,7 +101,7 @@ class _PostPageState extends State<PostPage> {
             if (imageBitmap != null) Image.memory(imageBitmap),
             ElevatedButton(
               style: ElevatedButton.styleFrom(
-                backgroundColor: Colors.grey.shade300,
+                backgroundColor: Colors.white,
               ),
               onPressed: _selectImage,
               child: const Text('画像を選択', style: TextStyle(color: textColor)),
@@ -176,7 +144,7 @@ class _PostPageState extends State<PostPage> {
                     },
                   ),
                   DropdownButtonFormField<String>(
-                    dropdownColor: Colors.pink.shade100,
+                    dropdownColor: Colors.white,
                     value: _selectedPrefecture,
                     decoration: InputDecoration(
                       labelText: '県名',
@@ -225,7 +193,7 @@ class _PostPageState extends State<PostPage> {
                   SizedBox(height: 20),
                   ElevatedButton(
                     style: ElevatedButton.styleFrom(
-                      backgroundColor: Colors.grey.shade300,
+                      backgroundColor: Colors.white,
                     ),
                     onPressed: () async {
                       setState(() {
