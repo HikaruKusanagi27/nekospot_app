@@ -17,7 +17,7 @@ class PostPage extends ConsumerStatefulWidget {
 
 class _PostPageState extends ConsumerState<PostPage> {
   // 画像選択のためのImagePickerを追加
-  final ImagePicker _picker = ImagePicker();
+
   final _formKey = GlobalKey<FormState>();
   final TextEditingController _nameController = TextEditingController();
   final TextEditingController _placeController = TextEditingController();
