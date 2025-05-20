@@ -70,7 +70,7 @@ class _PostPageState extends ConsumerState<PostPage> {
     '大分県',
     '宮崎県',
     '鹿児島県',
-    ''
+    '沖縄県'
   ];
 
   // 選択された都道府県を保持する変数
