@@ -46,7 +46,7 @@ class PostListPage extends StatelessWidget {
         child: _PostSection(),
       ),
       floatingActionButton: FloatingActionButton(
-        backgroundColor: Colors.white,
+        backgroundColor: Theme.of(context).colorScheme.primary,
         onPressed: () {
           Navigator.push(
             context,
@@ -139,7 +139,7 @@ class _PostList extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Card(
-      color: Colors.white,
+      color: Colors.pink.shade100,
       child: Padding(
         padding: const EdgeInsets.all(10),
         child: Column(

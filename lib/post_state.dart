@@ -1,4 +1,3 @@
-import 'package:flutter/material.dart';
 import 'package:flutter/foundation.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:image/image.dart' as image_lib;
@@ -13,6 +12,7 @@ class PostState with _$PostState {
     @Default(false) bool isLoading,
     Uint8List? imageBitmap,
     @Default('') String errorMessage,
+    String? selectedPrefecture,
   }) = _PostState;
 }
 
@@ -26,9 +26,7 @@ class PostViewModel extends StateNotifier<PostState> {
 
   final ImagePicker _picker = ImagePicker();
 
-  PostState get state => _state;
-
-  Future<void> _selectImage() async {
+  Future<void> selectImage() async {
     // ファイルの抽象化クラス
     // 画像を選択する
     final XFile? imageFile =
@@ -36,27 +34,17 @@ class PostViewModel extends StateNotifier<PostState> {
 
     // ファイルオブジェクトから画像データを取得する
     final imageBitmap = await imageFile?.readAsBytes();
-    assert(imageBitmap != null);
     if (imageBitmap == null) return;
 
     // 画像データをデコードする
     final image = image_lib.decodeImage(imageBitmap);
-    assert(image != null);
     if (image == null) return;
 
-    // // 画像データとメタデータを内包したクラス
-    // final image_lib.Image resizedImage;
-    // if (image.width > image.height) {
-    //   // 横長の画像なら横幅を500にリサイズする
-    //   resizedImage = image_lib.copyResize(image, width: 500);
-    // } else {
-    //   // 縦長の画像なら縦幅を500にリサイズする
-    //   resizedImage = image_lib.copyResize(image, height: 500);
-    // }
-
     // 画像をエンコードして状態を更新する
-    setState(() {
-      _imageBitmap = image_lib.encodeBmp(image);
-    });
+    state = state.copyWith(imageBitmap: image_lib.encodeBmp(image));
+  }
+
+  void setPrefecture(String? prefecture) {
+    state = state.copyWith(selectedPrefecture: prefecture);
   }
 }

@@ -12,67 +12,60 @@ class TitlePage extends StatelessWidget {
     return Scaffold(
       body: Center(
         child: Column(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
-            SizedBox(),
-            Column(
-              children: [
-                Text(
-                  '猫スナップ',
-                  style: GoogleFonts.sawarabiMincho(
-                    fontSize: 40.0,
-                    fontWeight: FontWeight.bold,
-                    letterSpacing: 2.0,
-                    color: colorScheme.onPrimary,
-                  ),
+            Text(
+              '猫スナップ',
+              style: GoogleFonts.sawarabiMincho(
+                fontSize: 40.0,
+                fontWeight: FontWeight.bold,
+                letterSpacing: 2.0,
+                color: colorScheme.onPrimary,
+              ),
+            ),
+            ElevatedButton.icon(
+              icon: Icon(
+                Icons.pets,
+                color: colorScheme.secondary,
+              ),
+              label: Text(
+                'はじめる',
+                style: TextStyle(
+                  color: colorScheme.secondary,
+                  fontSize: 24,
+                  fontWeight: FontWeight.bold,
                 ),
-                SizedBox(height: 20),
-                ElevatedButton.icon(
-                  icon: Icon(
-                    Icons.pets,
-                    color: colorScheme.secondary,
+              ),
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => PostListPage(),
                   ),
-                  label: Text(
-                    'はじめる',
-                    style: TextStyle(
-                      color: colorScheme.secondary,
-                      fontSize: 24,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                  onPressed: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => PostListPage(),
-                      ),
-                    );
-                  },
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: Colors.white,
-                    foregroundColor: colorScheme.secondary,
-                    padding: EdgeInsets.symmetric(horizontal: 30, vertical: 15),
-                    textStyle: TextStyle(
-                      fontSize: 24,
-                      fontWeight: FontWeight.bold,
-                      letterSpacing: 1.5,
-                    ),
-                  ),
+                );
+              },
+              style: ElevatedButton.styleFrom(
+                backgroundColor: Colors.white,
+                foregroundColor: colorScheme.secondary,
+                padding: EdgeInsets.symmetric(horizontal: 30, vertical: 15),
+                textStyle: TextStyle(
+                  fontSize: 24,
+                  fontWeight: FontWeight.bold,
+                  letterSpacing: 1.5,
                 ),
-                SizedBox(height: 20),
-                Container(
-                  padding: EdgeInsets.all(8),
-                  child: ClipRRect(
-                    borderRadius: BorderRadius.circular(110),
-                    child: Image.asset(
-                      'images/cat-5098930_640.jpg',
-                      height: 400,
-                      width: 400,
-                      fit: BoxFit.cover,
-                    ),
-                  ),
+              ),
+            ),
+            Container(
+              padding: EdgeInsets.all(8),
+              child: ClipRRect(
+                borderRadius: BorderRadius.circular(110),
+                child: Image.asset(
+                  'images/cat-5098930_640.jpg',
+                  height: 400,
+                  width: 400,
+                  fit: BoxFit.cover,
                 ),
-              ],
+              ),
             ),
           ],
         ),
