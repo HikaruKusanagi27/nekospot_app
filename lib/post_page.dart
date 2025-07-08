@@ -67,7 +67,7 @@ final _nameController = TextEditingController();
 void resetPostPageState() {
   _nameController.clear();
   _selectedPrefecture = null;
-  _image = null;
+  //_image = null;
 }
 
 class PostPage extends ConsumerWidget {
