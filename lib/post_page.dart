@@ -53,7 +53,7 @@ final List<String> _prefectures = [
   '大分県',
   '宮崎県',
   '鹿児島県',
-  '沖縄県'
+  ''
 ];
 
 // 選択された都道府県を保持する変数
@@ -67,7 +67,7 @@ final _nameController = TextEditingController();
 void resetPostPageState() {
   _nameController.clear();
   _selectedPrefecture = null;
-  //_image = null;
+  _image = null;
 }
 
 class PostPage extends ConsumerWidget {
