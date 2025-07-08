@@ -58,7 +58,7 @@ final List<String> _prefectures = [
 
 // 選択された都道府県を保持する変数
 String? _selectedPrefecture;
-String? _imageError;
+
 XFile? _image;
 final _formKey = GlobalKey<FormState>();
 final ImagePicker picker = ImagePicker();
@@ -68,7 +68,6 @@ void resetPostPageState() {
   _nameController.clear();
   _selectedPrefecture = null;
   _image = null;
-  _imageError = null;
 }
 
 class PostPage extends ConsumerWidget {
