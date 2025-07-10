@@ -1,6 +1,5 @@
 import 'package:flutter/foundation.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:image/image.dart' as image_lib;
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -28,24 +27,17 @@ final postViewModelProvider =
 class PostViewModel extends StateNotifier<PostState> {
   PostViewModel() : super(const PostState());
 
-  final ImagePicker _picker = ImagePicker();
+  void resetImage() {
+    state = state.copyWith(imageBitmap: null);
+  }
 
   Future<void> selectImage() async {
-    // ファイルの抽象化クラス
-    // 画像を選択する
-    final XFile? imageFile =
-        await _picker.pickImage(source: ImageSource.gallery);
-
-    // ファイルオブジェクトから画像データを取得する
-    final imageBitmap = await imageFile?.readAsBytes();
-    if (imageBitmap == null) return;
-
-    // 画像データをデコードする
-    final image = image_lib.decodeImage(imageBitmap);
-    if (image == null) return;
-
-    // 画像をエンコードして状態を更新する
-    state = state.copyWith(imageBitmap: image_lib.encodeBmp(image));
+    final picker = ImagePicker();
+    final picked = await picker.pickImage(source: ImageSource.gallery);
+    if (picked != null) {
+      final bytes = await picked.readAsBytes();
+      state = state.copyWith(imageBitmap: bytes);
+    }
   }
 
   void setPrefecture(String? prefecture) {
