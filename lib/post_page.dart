@@ -67,7 +67,7 @@ final _nameController = TextEditingController();
 void resetPostPageState(WidgetRef ref) {
   _nameController.clear();
   _selectedPrefecture = null;
-
+  _image = null;
   ref.read(postViewModelProvider.notifier).resetImage();
 }
 
@@ -107,8 +107,15 @@ class PostPage extends ConsumerWidget {
               child: Column(
                 children: [
                   ElevatedButton(
-                    onPressed: () {
-                      ref.read(postViewModelProvider.notifier).selectImage();
+                    onPressed: () async {
+                      final picked =
+                          await picker.pickImage(source: ImageSource.gallery);
+                      if (picked != null) {
+                        _image = picked;
+                        ref
+                            .read(postViewModelProvider.notifier)
+                            .setImageError(null);
+                      }
                     },
                     child: const Text(
                       '画像を選択',
