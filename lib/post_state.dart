@@ -48,33 +48,55 @@ class PostViewModel extends StateNotifier<PostState> {
     state = state.copyWith(imageError: error);
   }
 
+  // Future<void> saveToFirebase({
+  //   required String title,
+  //   required String? prefectureName,
+  //   required XFile? image,
+  // }) async {
+  //   try {
+  //     String? imageUrl;
+  //     if (image != null) {
+  //       final fileName =
+  //           DateTime.now().millisecondsSinceEpoch.toString(); // 現在の日時一意なファイル名
+  //       final storageRef = FirebaseStorage.instance
+  //           .ref()
+  //           .child('post_images')
+  //           .child('$fileName.jpg');
+  //       await storageRef.putFile(File(image.path));
+  //       imageUrl = await storageRef.getDownloadURL();
+  //     }
+
+  //     await FirebaseFirestore.instance.collection('posts').add({
+  //       'title': title,
+  //       'prefectureName': prefectureName,
+  //       'imageUrl': imageUrl,
+  //       'createdAt': FieldValue.serverTimestamp(),
+  //     });
+  //   } catch (e) {
+  //     if (kDebugMode) {
+  //       print('Error saving to Firebase: $e');
+  //     }
+  //   }
+  // }
+
+// 作業途中
   Future<void> saveToFirebase({
     required String title,
     required String? prefectureName,
     required XFile? image,
   }) async {
-    try {
-      String? imageUrl;
-      if (image != null) {
-        final fileName = DateTime.now().millisecondsSinceEpoch.toString();
-        final storageRef = FirebaseStorage.instance
-            .ref()
-            .child('post_images')
-            .child('$fileName.jpg');
-        await storageRef.putFile(File(image.path));
-        imageUrl = await storageRef.getDownloadURL();
-      }
-
-      await FirebaseFirestore.instance.collection('posts').add({
-        'title': title,
-        'prefectureName': prefectureName,
-        'imageUrl': imageUrl,
-        'createdAt': FieldValue.serverTimestamp(),
-      });
-    } catch (e) {
-      if (kDebugMode) {
-        print('Error saving to Firebase: $e');
+    // 画像をスマホのギャラリーから取得
+    //final image = await ImagePicker().pickImage(source: ImageSource.gallery);
+    // 画像を取得できた場合はFirebaseStorageにアップロードする
+    if (image != null) {
+      final imageFile = File(image.path);
+      FirebaseStorage storage = FirebaseStorage.instance;
+      try {
+        await storage.ref('sample.png').putFile(imageFile);
+      } catch (e) {
+        print(e);
       }
     }
+    return;
   }
 }
