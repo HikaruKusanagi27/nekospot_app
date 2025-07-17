@@ -79,7 +79,7 @@ class PostViewModel extends StateNotifier<PostState> {
   //   }
   // }
 
-// 作業途中
+// 作業途中、Firebaseに画像をアッオロードするやり方に苦戦中
   Future<void> saveToFirebase({
     required String title,
     required String? prefectureName,
