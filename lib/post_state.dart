@@ -92,7 +92,14 @@ class PostViewModel extends StateNotifier<PostState> {
       final imageFile = File(image.path);
       FirebaseStorage storage = FirebaseStorage.instance;
       try {
-        await storage.ref('sample.png').putFile(imageFile);
+        String? imageUrl;
+        await storage.ref('post_images').putFile(imageFile);
+        await FirebaseFirestore.instance.collection('posts').add({
+          'title': title,
+          'prefectureName': prefectureName,
+          'imageUrl': imageUrl,
+          'createdAt': FieldValue.serverTimestamp(),
+        });
       } catch (e) {
         print(e);
       }
