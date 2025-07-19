@@ -16,7 +16,6 @@ class PostState with _$PostState {
     @Default('') String errorMessage,
     String? selectedPrefecture,
     String? imageError,
-    XFile? selectedImage,
   }) = _PostState;
 }
 
@@ -59,12 +58,7 @@ class PostViewModel extends StateNotifier<PostState> {
     try {
       String? imageUrl;
       if (image != null) {
-        final fileName =
-            DateTime.now().millisecondsSinceEpoch.toString(); // 現在の日時一意なファイル名
-        final storageRef = FirebaseStorage.instance
-            .ref()
-            .child('post_images')
-            .child('$fileName.jpg');
+        final storageRef = FirebaseStorage.instance.ref().child('post_images');
         await storageRef.putFile(File(image.path));
         imageUrl = await storageRef.getDownloadURL();
       }
