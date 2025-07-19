@@ -16,6 +16,7 @@ class PostState with _$PostState {
     @Default('') String errorMessage,
     String? selectedPrefecture,
     String? imageError,
+    XFile? selectedImage,
   }) = _PostState;
 }
 
@@ -36,7 +37,9 @@ class PostViewModel extends StateNotifier<PostState> {
     final picked = await picker.pickImage(source: ImageSource.gallery);
     if (picked != null) {
       final bytes = await picked.readAsBytes();
-      state = state.copyWith(imageBitmap: bytes);
+      state = state.copyWith(
+        imageBitmap: bytes,
+      );
     }
   }
 
@@ -48,62 +51,62 @@ class PostViewModel extends StateNotifier<PostState> {
     state = state.copyWith(imageError: error);
   }
 
-  // Future<void> saveToFirebase({
-  //   required String title,
-  //   required String? prefectureName,
-  //   required XFile? image,
-  // }) async {
-  //   try {
-  //     String? imageUrl;
-  //     if (image != null) {
-  //       final fileName =
-  //           DateTime.now().millisecondsSinceEpoch.toString(); // 現在の日時一意なファイル名
-  //       final storageRef = FirebaseStorage.instance
-  //           .ref()
-  //           .child('post_images')
-  //           .child('$fileName.jpg');
-  //       await storageRef.putFile(File(image.path));
-  //       imageUrl = await storageRef.getDownloadURL();
-  //     }
-
-  //     await FirebaseFirestore.instance.collection('posts').add({
-  //       'title': title,
-  //       'prefectureName': prefectureName,
-  //       'imageUrl': imageUrl,
-  //       'createdAt': FieldValue.serverTimestamp(),
-  //     });
-  //   } catch (e) {
-  //     if (kDebugMode) {
-  //       print('Error saving to Firebase: $e');
-  //     }
-  //   }
-  // }
-
-// 作業途中、Firebaseに画像をアッオロードするやり方に苦戦中
   Future<void> saveToFirebase({
     required String title,
     required String? prefectureName,
     required XFile? image,
   }) async {
-    // 画像をスマホのギャラリーから取得
-    //final image = await ImagePicker().pickImage(source: ImageSource.gallery);
-    // 画像を取得できた場合はFirebaseStorageにアップロードする
-    if (image != null) {
-      final imageFile = File(image.path);
-      FirebaseStorage storage = FirebaseStorage.instance;
-      try {
-        String? imageUrl;
-        await storage.ref('post_images').putFile(imageFile);
-        await FirebaseFirestore.instance.collection('posts').add({
-          'title': title,
-          'prefectureName': prefectureName,
-          'imageUrl': imageUrl,
-          'createdAt': FieldValue.serverTimestamp(),
-        });
-      } catch (e) {
-        print(e);
+    try {
+      String? imageUrl;
+      if (image != null) {
+        final fileName =
+            DateTime.now().millisecondsSinceEpoch.toString(); // 現在の日時一意なファイル名
+        final storageRef = FirebaseStorage.instance
+            .ref()
+            .child('post_images')
+            .child('$fileName.jpg');
+        await storageRef.putFile(File(image.path));
+        imageUrl = await storageRef.getDownloadURL();
+      }
+
+      await FirebaseFirestore.instance.collection('posts').add({
+        'title': title,
+        'prefectureName': prefectureName,
+        'imageUrl': imageUrl,
+        'createdAt': FieldValue.serverTimestamp(),
+      });
+    } catch (e) {
+      if (kDebugMode) {
+        print('Error saving to Firebase: $e');
       }
     }
-    return;
   }
+
+// 作業途中、Firebaseに画像をアッオロードするやり方に苦戦中
+  // Future<void> saveToFirebase({
+  //   required String title,
+  //   required String? prefectureName,
+  //   required XFile? image,
+  // }) async {
+  //   // 画像をスマホのギャラリーから取得
+  //   //final image = await ImagePicker().pickImage(source: ImageSource.gallery);
+  //   // 画像を取得できた場合はFirebaseStorageにアップロードする
+  //   if (image != null) {
+  //     final imageFile = File(image.path);
+  //     FirebaseStorage storage = FirebaseStorage.instance;
+  //     try {
+  //       String? imageUrl;
+  //       await storage.ref('post_images').putFile(imageFile);
+  //       await FirebaseFirestore.instance.collection('posts').add({
+  //         'title': title,
+  //         'prefectureName': prefectureName,
+  //         'imageUrl': imageUrl,
+  //         'createdAt': FieldValue.serverTimestamp(),
+  //       });
+  //     } catch (e) {
+  //       print(e);
+  //     }
+  //   }
+  //   return;
+  // }
 }
