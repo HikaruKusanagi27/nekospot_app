@@ -56,6 +56,7 @@ class PostViewModel extends StateNotifier<PostState> {
     required XFile? image,
   }) async {
     try {
+      // try で失敗するかもしれない処理
       String? imageUrl;
       if (image != null) {
         final storageRef = FirebaseStorage.instance.ref().child('post_images');
@@ -70,37 +71,10 @@ class PostViewModel extends StateNotifier<PostState> {
         'createdAt': FieldValue.serverTimestamp(),
       });
     } catch (e) {
+      // catch で「エラーが起きたときの処理」を書く
       if (kDebugMode) {
         print('Error saving to Firebase: $e');
       }
     }
   }
-
-// 作業途中、Firebaseに画像をアッオロードするやり方に苦戦中
-  // Future<void> saveToFirebase({
-  //   required String title,
-  //   required String? prefectureName,
-  //   required XFile? image,
-  // }) async {
-  //   // 画像をスマホのギャラリーから取得
-  //   //final image = await ImagePicker().pickImage(source: ImageSource.gallery);
-  //   // 画像を取得できた場合はFirebaseStorageにアップロードする
-  //   if (image != null) {
-  //     final imageFile = File(image.path);
-  //     FirebaseStorage storage = FirebaseStorage.instance;
-  //     try {
-  //       String? imageUrl;
-  //       await storage.ref('post_images').putFile(imageFile);
-  //       await FirebaseFirestore.instance.collection('posts').add({
-  //         'title': title,
-  //         'prefectureName': prefectureName,
-  //         'imageUrl': imageUrl,
-  //         'createdAt': FieldValue.serverTimestamp(),
-  //       });
-  //     } catch (e) {
-  //       print(e);
-  //     }
-  //   }
-  //   return;
-  // }
 }
