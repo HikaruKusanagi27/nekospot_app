@@ -18,25 +18,11 @@ class PostListPage extends StatelessWidget {
       backgroundColor: Colors.white,
       appBar: AppBar(
         backgroundColor: colorScheme.primary,
-        leading: IconButton(
-          onPressed: () {
-            Navigator.pop(context);
-          },
-          icon: const Icon(Icons.arrow_back),
-        ),
-        actions: [
-          IconButton(
-            onPressed: null,
-            icon: const Icon(null),
-          ),
-        ],
-        automaticallyImplyLeading: false,
         title: Center(
           child: Text(
             'みんなの投稿',
             style: TextStyle(
               fontWeight: FontWeight.bold,
-              letterSpacing: 2.0,
               color: Theme.of(context).colorScheme.onPrimary,
             ),
           ),

@@ -93,13 +93,13 @@ class PostPage extends ConsumerWidget {
           Scaffold(
             backgroundColor: Colors.white,
             appBar: AppBar(
-              // title: Text(
-              //   '投稿',
-              //   style: TextStyle(
-              //     fontWeight: FontWeight.bold,
-              //     letterSpacing: 2.0,
-              //   ),
-              // ),
+              title: Text(
+                '投稿内容を入力',
+                style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                  letterSpacing: 2.0,
+                ),
+              ),
               backgroundColor: Colors.pink.shade100,
             ),
             body: Padding(

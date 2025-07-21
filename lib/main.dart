@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:test/title_page.dart';
+import 'package:test/post_list_page.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'firebase_options.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -34,7 +34,7 @@ void main() async {
           ),
           useMaterial3: true,
         ),
-        home: const TitlePage(),
+        home: const PostListPage(),
       ),
     ),
   );
