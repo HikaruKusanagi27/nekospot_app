@@ -55,6 +55,7 @@ class PostViewModel extends StateNotifier<PostState> {
     required String? prefectureName,
     required XFile? image,
   }) async {
+    state = state.copyWith(isLoading: true);
     try {
       // try で失敗するかもしれない処理
       String? imageUrl;
@@ -75,6 +76,8 @@ class PostViewModel extends StateNotifier<PostState> {
       if (kDebugMode) {
         print('Error saving to Firebase: $e');
       }
+    } finally {
+      state = state.copyWith(isLoading: false);
     }
   }
 }

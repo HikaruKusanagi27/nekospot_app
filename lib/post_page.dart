@@ -217,7 +217,7 @@ class PostPage extends ConsumerWidget {
                           style: ElevatedButton.styleFrom(
                             backgroundColor: colorScheme.primary,
                           ),
-                          onPressed: () {
+                          onPressed: () async {
                             final notifier =
                                 ref.read(postViewModelProvider.notifier);
                             // 画像が未選択ならエラーをセット
@@ -230,14 +230,19 @@ class PostPage extends ConsumerWidget {
                             // フォームバリデーション
                             if (_formKey.currentState!.validate() &&
                                 _image != null) {
-                              notifier.saveToFirebase(
+                              await notifier.saveToFirebase(
                                 title: _nameController.text,
                                 prefectureName: ref
                                     .read(postViewModelProvider)
                                     .selectedPrefecture,
                                 image: _image,
                               );
+                              if (!context.mounted) return;
+                              Navigator.of(context).pop();
                             }
+                            CircularProgressIndicator(
+                              color: Colors.blue,
+                            );
                           },
                           child: Text(
                             '投稿',
