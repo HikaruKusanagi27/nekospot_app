@@ -79,7 +79,6 @@ class PostPage extends ConsumerWidget {
     const textColor = Colors.black;
     final colorScheme = Theme.of(context).colorScheme;
     final postState = ref.watch(postViewModelProvider);
-    final imageBitmap = postState.imageBitmap;
 
     return PopScope(
       onPopInvokedWithResult: (didPop, result) {
@@ -117,32 +116,47 @@ class PostPage extends ConsumerWidget {
                             .setImageError(null);
                       }
                     },
-                    child: Container(
-                      height: 100,
-                      width: 100,
-                      decoration: BoxDecoration(
-                        color: Colors.grey,
-                        borderRadius: BorderRadius.circular(16), // ここで角丸を指定
-                      ),
-                      child: Stack(
-                        children: [
-                          Center(
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                Icon(
-                                  Icons.photo_camera,
-                                  size: 25,
-                                ),
-                                Text('画像を選択')
-                              ],
-                            ),
-                          ),
-                        ],
-                      ),
+                    child: Column(
+                      children: [
+                        if (_image != null) Image.file(File(_image!.path)),
+                      ],
                     ),
                   ),
-                  if (imageBitmap != null) Image.memory(imageBitmap),
+                  // 画像が選択されていなければ「画像を選択」を表示
+                  if (_image == null)
+                    GestureDetector(
+                      onTap: () async {
+                        final picked =
+                            await picker.pickImage(source: ImageSource.gallery);
+                        if (picked != null) {
+                          _image = picked;
+                          ref
+                              .read(postViewModelProvider.notifier)
+                              .setImageError(null);
+                        }
+                      },
+                      child: Container(
+                        height: 100,
+                        width: 100,
+                        decoration: BoxDecoration(
+                          color: Colors.grey,
+                          borderRadius: BorderRadius.circular(16), // ここで角丸を指定
+                        ),
+                        child: Center(
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Icon(
+                                Icons.photo_camera,
+                                size: 25,
+                              ),
+                              Text('画像を選択')
+                            ],
+                          ),
+                        ),
+                      ),
+                    ),
+                  SizedBox(height: 10),
                   if (postState.imageError != null)
                     Text(
                       postState.imageError!,
@@ -151,7 +165,6 @@ class PostPage extends ConsumerWidget {
                         fontSize: 12,
                       ),
                     ),
-                  if (_image != null) Image.file(File(_image!.path)),
                   Form(
                     key: _formKey,
                     child: Column(
