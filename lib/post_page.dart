@@ -106,8 +106,8 @@ class PostPage extends ConsumerWidget {
               padding: const EdgeInsets.all(8.0),
               child: Column(
                 children: [
-                  ElevatedButton(
-                    onPressed: () async {
+                  GestureDetector(
+                    onTap: () async {
                       final picked =
                           await picker.pickImage(source: ImageSource.gallery);
                       if (picked != null) {
@@ -117,10 +117,28 @@ class PostPage extends ConsumerWidget {
                             .setImageError(null);
                       }
                     },
-                    child: const Text(
-                      '画像を選択',
-                      style: TextStyle(
-                        color: Colors.black,
+                    child: Container(
+                      height: 100,
+                      width: 100,
+                      decoration: BoxDecoration(
+                        color: Colors.grey,
+                        borderRadius: BorderRadius.circular(16), // ここで角丸を指定
+                      ),
+                      child: Stack(
+                        children: [
+                          Center(
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Icon(
+                                  Icons.photo_camera,
+                                  size: 25,
+                                ),
+                                Text('画像を選択')
+                              ],
+                            ),
+                          ),
+                        ],
                       ),
                     ),
                   ),
