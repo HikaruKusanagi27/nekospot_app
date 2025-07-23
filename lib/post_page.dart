@@ -116,47 +116,27 @@ class PostPage extends ConsumerWidget {
                             .setImageError(null);
                       }
                     },
-                    child: Column(
-                      children: [
-                        if (_image != null) Image.file(File(_image!.path)),
-                      ],
-                    ),
-                  ),
-                  // 画像が選択されていなければ「画像を選択」を表示
-                  if (_image == null)
-                    GestureDetector(
-                      onTap: () async {
-                        final picked =
-                            await picker.pickImage(source: ImageSource.gallery);
-                        if (picked != null) {
-                          _image = picked;
-                          ref
-                              .read(postViewModelProvider.notifier)
-                              .setImageError(null);
-                        }
-                      },
-                      child: Container(
-                        height: 100,
-                        width: 100,
-                        decoration: BoxDecoration(
-                          color: Colors.grey,
-                          borderRadius: BorderRadius.circular(16), // ここで角丸を指定
-                        ),
-                        child: Center(
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Icon(
-                                Icons.photo_camera,
-                                size: 25,
+                    // 画像が選択されていなければ「画像を選択」を表示、選択されていたら画像を表示
+                    child: _image != null
+                        ? Image.file(File(_image!.path))
+                        : Container(
+                            height: 100,
+                            width: 100,
+                            decoration: BoxDecoration(
+                              color: Colors.grey,
+                              borderRadius: BorderRadius.circular(16),
+                            ),
+                            child: Center(
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Icon(Icons.photo_camera, size: 25),
+                                  Text('画像を選択'),
+                                ],
                               ),
-                              Text('画像を選択')
-                            ],
+                            ),
                           ),
-                        ),
-                      ),
-                    ),
-                  SizedBox(height: 10),
+                  ),
                   if (postState.imageError != null)
                     Text(
                       postState.imageError!,
