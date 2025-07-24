@@ -137,6 +137,7 @@ class PostPage extends ConsumerWidget {
                             ),
                           ),
                   ),
+                  // imageError が null ではない
                   if (postState.imageError != null)
                     Text(
                       postState.imageError!,
