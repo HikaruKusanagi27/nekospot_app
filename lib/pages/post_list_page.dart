@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:test/post_page.dart';
+import 'package:test/pages/post_page.dart';
 import 'dart:developer' as developer;
-import 'models/post_info.dart';
-import 'providers/post_provider.dart';
+import '../models/post_info.dart';
+import '../providers/post_provider.dart';
 
 class PostListPage extends StatelessWidget {
   const PostListPage({super.key});
