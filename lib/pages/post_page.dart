@@ -101,173 +101,175 @@ class PostPage extends ConsumerWidget {
               ),
               backgroundColor: Colors.pink.shade100,
             ),
-            body: Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Column(
-                children: [
-                  GestureDetector(
-                    onTap: () async {
-                      final picked =
-                          await picker.pickImage(source: ImageSource.gallery);
-                      if (picked != null) {
-                        _image = picked;
-                        ref
-                            .read(postViewModelProvider.notifier)
-                            .setImageError(null);
-                      }
-                    },
-                    // 画像が選択されていなければ「画像を選択」を表示、選択されていたら画像を表示
-                    child: _image != null
-                        ? Image.file(File(_image!.path))
-                        : Container(
-                            height: 100,
-                            width: 100,
-                            decoration: BoxDecoration(
-                              color: Colors.grey,
-                              borderRadius: BorderRadius.circular(16),
+            body: SingleChildScrollView(
+              child: Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Column(
+                  children: [
+                    GestureDetector(
+                      onTap: () async {
+                        final picked =
+                            await picker.pickImage(source: ImageSource.gallery);
+                        if (picked != null) {
+                          _image = picked;
+                          ref
+                              .read(postViewModelProvider.notifier)
+                              .setImageError(null);
+                        }
+                      },
+                      // 画像が選択されていなければ「画像を選択」を表示、選択されていたら画像を表示
+                      child: _image != null
+                          ? Image.file(File(_image!.path))
+                          : Container(
+                              height: 100,
+                              width: 100,
+                              decoration: BoxDecoration(
+                                color: Colors.grey,
+                                borderRadius: BorderRadius.circular(16),
+                              ),
+                              child: Center(
+                                child: Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    Icon(Icons.photo_camera, size: 25),
+                                    Text('画像を選択'),
+                                  ],
+                                ),
+                              ),
                             ),
-                            child: Center(
-                              child: Column(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  Icon(Icons.photo_camera, size: 25),
-                                  Text('画像を選択'),
-                                ],
+                    ),
+                    // 比較演算子の勉強中
+                    // imageError が null ではない
+                    if (postState.imageError != null)
+                      Text(
+                        postState.imageError!,
+                        style: TextStyle(
+                          color: Theme.of(context).colorScheme.error,
+                          fontSize: 12,
+                        ),
+                      ),
+                    Form(
+                      key: _formKey,
+                      child: Column(
+                        children: [
+                          SizedBox(height: 10),
+                          TextFormField(
+                            cursorColor: textColor,
+                            controller: _nameController,
+                            inputFormatters: [
+                              LengthLimitingTextInputFormatter(10),
+                            ],
+                            decoration: InputDecoration(
+                              labelText: 'タイトル',
+                              labelStyle: TextStyle(color: textColor),
+                              enabledBorder: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(16),
+                                borderSide: BorderSide(color: textColor),
+                              ),
+                              focusedBorder: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(16),
+                                borderSide: BorderSide(color: textColor),
+                              ),
+                              errorBorder: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(16),
+                                borderSide:
+                                    BorderSide(color: Colors.red), // エラー時の色
+                              ),
+                            ),
+                            validator: (value) {
+                              if (value == null || value.isEmpty) {
+                                return 'タイトルを入力してね！';
+                              }
+                              if (value.length > 10) {
+                                return '10文字以内で入力してね！';
+                              }
+                              return null;
+                            },
+                          ),
+                          SizedBox(height: 10),
+                          DropdownButtonFormField<String>(
+                            dropdownColor: Colors.white,
+                            value: _selectedPrefecture,
+                            decoration: InputDecoration(
+                              labelText: '県名',
+                              labelStyle: TextStyle(color: textColor),
+                              enabledBorder: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(16),
+                                borderSide: BorderSide(color: textColor),
+                              ),
+                              focusedBorder: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(16),
+                                borderSide: BorderSide(color: textColor),
+                              ),
+                              errorBorder: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(16),
+                                borderSide:
+                                    BorderSide(color: Colors.red), // エラー時の色
+                              ),
+                            ),
+                            style: TextStyle(color: textColor),
+                            items: _prefectures.map((String prefecture) {
+                              return DropdownMenuItem<String>(
+                                value: prefecture,
+                                child: Text(prefecture),
+                              );
+                            }).toList(),
+                            onChanged: (String? newValue) {
+                              ref
+                                  .read(postViewModelProvider.notifier)
+                                  .setPrefecture(newValue);
+                            },
+                            validator: (value) {
+                              if (value == null || value.isEmpty) {
+                                return '県名を選択してね！';
+                              }
+                              return null;
+                            },
+                          ),
+                          SizedBox(height: 20),
+                          ElevatedButton(
+                            style: ElevatedButton.styleFrom(
+                              backgroundColor: colorScheme.primary,
+                            ),
+                            onPressed: () async {
+                              final notifier =
+                                  ref.read(postViewModelProvider.notifier);
+                              // 画像が未選択ならエラーをセット
+                              if (_image == null) {
+                                notifier.setImageError('画像が選択されていないよ！');
+                              } else {
+                                notifier.setImageError(null);
+                              }
+
+                              // フォームバリデーション
+                              if (_formKey.currentState!.validate() &&
+                                  _image != null) {
+                                await notifier.saveToFirebase(
+                                  title: _nameController.text,
+                                  prefectureName: ref
+                                      .read(postViewModelProvider)
+                                      .selectedPrefecture,
+                                  image: _image,
+                                );
+                                if (!context.mounted) return;
+                                Navigator.of(context).pop();
+                              }
+                              CircularProgressIndicator(
+                                color: Colors.blue,
+                              );
+                            },
+                            child: Text(
+                              '投稿',
+                              style: TextStyle(
+                                color: Colors.black,
                               ),
                             ),
                           ),
-                  ),
-                  // 比較演算子の勉強中
-                  // imageError が null ではない
-                  if (postState.imageError != null)
-                    Text(
-                      postState.imageError!,
-                      style: TextStyle(
-                        color: Theme.of(context).colorScheme.error,
-                        fontSize: 12,
+                        ],
                       ),
                     ),
-                  Form(
-                    key: _formKey,
-                    child: Column(
-                      children: [
-                        SizedBox(height: 10),
-                        TextFormField(
-                          cursorColor: textColor,
-                          controller: _nameController,
-                          inputFormatters: [
-                            LengthLimitingTextInputFormatter(10),
-                          ],
-                          decoration: InputDecoration(
-                            labelText: 'タイトル',
-                            labelStyle: TextStyle(color: textColor),
-                            enabledBorder: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(16),
-                              borderSide: BorderSide(color: textColor),
-                            ),
-                            focusedBorder: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(16),
-                              borderSide: BorderSide(color: textColor),
-                            ),
-                            errorBorder: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(16),
-                              borderSide:
-                                  BorderSide(color: Colors.red), // エラー時の色
-                            ),
-                          ),
-                          validator: (value) {
-                            if (value == null || value.isEmpty) {
-                              return 'タイトルを入力してね！';
-                            }
-                            if (value.length > 10) {
-                              return '10文字以内で入力してね！';
-                            }
-                            return null;
-                          },
-                        ),
-                        SizedBox(height: 10),
-                        DropdownButtonFormField<String>(
-                          dropdownColor: Colors.white,
-                          value: _selectedPrefecture,
-                          decoration: InputDecoration(
-                            labelText: '県名',
-                            labelStyle: TextStyle(color: textColor),
-                            enabledBorder: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(16),
-                              borderSide: BorderSide(color: textColor),
-                            ),
-                            focusedBorder: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(16),
-                              borderSide: BorderSide(color: textColor),
-                            ),
-                            errorBorder: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(16),
-                              borderSide:
-                                  BorderSide(color: Colors.red), // エラー時の色
-                            ),
-                          ),
-                          style: TextStyle(color: textColor),
-                          items: _prefectures.map((String prefecture) {
-                            return DropdownMenuItem<String>(
-                              value: prefecture,
-                              child: Text(prefecture),
-                            );
-                          }).toList(),
-                          onChanged: (String? newValue) {
-                            ref
-                                .read(postViewModelProvider.notifier)
-                                .setPrefecture(newValue);
-                          },
-                          validator: (value) {
-                            if (value == null || value.isEmpty) {
-                              return '県名を選択してね！';
-                            }
-                            return null;
-                          },
-                        ),
-                        SizedBox(height: 20),
-                        ElevatedButton(
-                          style: ElevatedButton.styleFrom(
-                            backgroundColor: colorScheme.primary,
-                          ),
-                          onPressed: () async {
-                            final notifier =
-                                ref.read(postViewModelProvider.notifier);
-                            // 画像が未選択ならエラーをセット
-                            if (_image == null) {
-                              notifier.setImageError('画像が選択されていないよ！');
-                            } else {
-                              notifier.setImageError(null);
-                            }
-
-                            // フォームバリデーション
-                            if (_formKey.currentState!.validate() &&
-                                _image != null) {
-                              await notifier.saveToFirebase(
-                                title: _nameController.text,
-                                prefectureName: ref
-                                    .read(postViewModelProvider)
-                                    .selectedPrefecture,
-                                image: _image,
-                              );
-                              if (!context.mounted) return;
-                              Navigator.of(context).pop();
-                            }
-                            CircularProgressIndicator(
-                              color: Colors.blue,
-                            );
-                          },
-                          child: Text(
-                            '投稿',
-                            style: TextStyle(
-                              color: Colors.black,
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                ],
+                  ],
+                ),
               ),
             ),
           ),
